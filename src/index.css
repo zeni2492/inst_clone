@@ -1,0 +1,29 @@
+:root {
+    --primary: #a974ff;
+    --secondary: #57b9fd;
+    --dark: #9699a9;
+    --nav: #293c76;
+    --default-margin: 10px;
+    --default-padding: 10px;
+    --default-radius: 5px;
+    --default-border: 1px solid var(--dark);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+        "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+        "Helvetica Neue", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #fafafa;
+    color: #3c3c3c;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+}
