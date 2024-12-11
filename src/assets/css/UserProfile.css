@@ -1,0 +1,96 @@
+.ProfilePage__container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.ProfilePage {
+    width: 80%;
+}
+
+.ProfilePage__title {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.ProfilePage__user {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ProfilePage__avatar {
+    margin-top: 24px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary);
+}
+
+.ProfilePage__username {
+    font-size: 1.5rem;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.ProfilePage__Images {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.ProfilePage__Photos {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-row-gap: 32px;
+    grid-column-gap: 32px;
+    place-items: center;
+    margin-top: 56px;
+}
+
+.ProfilePage__statistics {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    margin-top: 32px;
+    padding-bottom: 32px;
+    border-bottom: 4px solid var(--dark);
+}
+
+.ProfilePage__statsics-list {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.ProfilePage__statistics-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 32px;
+}
+
+@media screen and (max-width: 1024px) {
+    .ProfilePage__Photos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .ProfilePage__Photos {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

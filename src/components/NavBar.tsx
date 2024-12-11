@@ -1,0 +1,113 @@
+import { Link } from "react-router-dom";
+
+import MenuButton from "../assets/menu-svgrepo-com.svg";
+import UserDefault from "../assets/user-svgrepo-com.svg";
+import magnifier from "../assets/magnifier-svgrepo-com.svg";
+import feed from "../assets/feed.svg";
+import gear from "../assets/gear-svgrepo-com.svg";
+
+interface NavBarProps {
+    width: string;
+    CloseNavBar: () => void;
+}
+
+export const NavBar = ({ width, CloseNavBar }: NavBarProps) => {
+    return (
+        <aside className="NavBar__Container" style={{ width }}>
+            <div className="NavBar">
+                <button
+                    className="MenuButton NavBar__MenuButton"
+                    onClick={CloseNavBar}
+                >
+                    <img className="MenuIcon" src={MenuButton} alt="" />
+                </button>
+
+                <div className="NavBar__Content">
+                    <div className="NavBar__User">
+                        <img
+                            className="NavBar__Image"
+                            src={UserDefault}
+                            alt=""
+                        />
+                        <p className="NavBar__Username">Username</p>
+                    </div>
+                    <div className="Profile">
+                        <div className="Profile__Info">
+                            <div className="Profile__media Profile__Posts">
+                                <p>100</p>
+                                <h3>Posts</h3>
+                            </div>
+                            <div className="Profile__media Profile__Likes">
+                                <p>100</p>
+                                <h3>Likes</h3>
+                            </div>
+                            <div className="Profile__media Profile__Following">
+                                <p>100</p>
+                                <h3>Follows</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="navigation">
+                        <nav className="navigation__nav">
+                            <h2>Home</h2>
+                            <ul className="navigation__list">
+                                <li className="navigation__item">
+                                    <Link className="navigation__link" to={"/"}>
+                                        <span className="navigation__icon">
+                                            <img
+                                                className="navigation__image"
+                                                src={feed}
+                                                alt=""
+                                            />
+                                        </span>
+                                        Feed
+                                    </Link>
+                                </li>
+                                <li className="navigation__item">
+                                    <Link
+                                        className="navigation__link"
+                                        to={"/find"}
+                                    >
+                                        <span className="navigation__icon">
+                                            <img
+                                                className="navigation__image"
+                                                src={magnifier}
+                                                alt=""
+                                            />
+                                        </span>
+                                        Explore
+                                    </Link>
+                                </li>
+                                <li className="navigation__item">
+                                    <Link
+                                        className="navigation__link"
+                                        to={"/profile"}
+                                    >
+                                        <span className="navigation__icon">
+                                            <img
+                                                className="navigation__image"
+                                                src={UserDefault}
+                                                alt=""
+                                            />
+                                        </span>
+                                        Profile
+                                    </Link>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <footer className="NavBar__settings">
+                        <Link to={"/settings"} className="navigation__link">
+                            <img
+                                className="navigation__image"
+                                src={gear}
+                                alt=""
+                            />
+                            Settings
+                        </Link>
+                    </footer>
+                </div>
+            </div>
+        </aside>
+    );
+};

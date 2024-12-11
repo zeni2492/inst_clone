@@ -1,3 +1,6 @@
+@import url("./App.css");
+@import url("./UserProfile.css");
+
 :root {
     --primary: #a974ff;
     --secondary: #57b9fd;
@@ -5,8 +8,14 @@
     --nav: #293c76;
     --default-margin: 10px;
     --default-padding: 10px;
-    --default-radius: 5px;
+    --default-radius: 12px;
     --default-border: 1px solid var(--dark);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
@@ -19,11 +28,24 @@ body {
     -moz-osx-font-smoothing: grayscale;
     background-color: #fafafa;
     color: #3c3c3c;
-    width: 100%;
-    display: flex;
-    justify-content: center;
 }
 
 a {
     text-decoration: none;
+    color: inherit;
+}
+
+button,
+input {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--default-padding);
+    background: var(--primary);
+    border-radius: var(--default-radius);
+}
+
+ul,
+li {
+    list-style: none;
 }
