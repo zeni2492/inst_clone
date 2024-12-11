@@ -29,7 +29,11 @@ export type FetchedData = {
 export const ProfilePage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [PhotoList, setPhotoList] = useState<FetchedData[]>([]);
+    const [follow, setFollow] = useState(false);
 
+    function Follow() {
+        setFollow(!follow);
+    }
     const getImages = async () => {
         const response = await axios.get(
             "https://rickandmortyapi.com/api/character"
@@ -62,9 +66,18 @@ export const ProfilePage = () => {
                         src={DefaultUser}
                         alt=""
                     />
+                    <div className="ProfilePage__Follow">
+                        <button
+                            onClick={Follow}
+                            className="ProfilePage__Follow-button"
+                        >
+                            {follow ? "✓" : "+"}
+                        </button>
+                    </div>
                     <div className="ProfilePage__username">
                         <h2>Username</h2>
                     </div>
+                    <div></div>
                     <div className="ProfilePage__statistics">
                         <ul className="ProfilePage__statsics-list">
                             <li className="ProfilePage__statistics-item">

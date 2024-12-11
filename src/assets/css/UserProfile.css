@@ -3,8 +3,7 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
-    align-items: center;
-    margin: 0 auto;
+    align-items: end;
 }
 
 .ProfilePage {
@@ -83,6 +82,36 @@
     margin: 0 32px;
 }
 
+.PostActions__Container {
+    width: 70%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.PostActions {
+}
+
+.PostActions img {
+    width: 30px;
+    cursor: pointer;
+}
+
+.ProfilePage__Follow-button {
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    top: -29px;
+    color: white;
+}
+
 @media screen and (max-width: 1024px) {
     .ProfilePage__Photos {
         grid-template-columns: repeat(2, 1fr);
@@ -90,6 +119,9 @@
 }
 
 @media screen and (max-width: 780px) {
+    .ProfilePage__container {
+        align-items: center;
+    }
     .ProfilePage__Photos {
         grid-template-columns: repeat(1, 1fr);
     }

@@ -8,34 +8,12 @@ import { HeaderComponent } from "./components/HeaderComponent";
 import { NavBar } from "./components/NavBar";
 import { PhoneNavComponent } from "./components/PhoneNavComponent";
 
-import { useState } from "react";
-
-import MenuIcon from "./assets/menu-svgrepo-com.svg";
-
 function App() {
-    const [width, setWidth] = useState<string>("20%");
-    const [margin, setMargin] = useState<string>("0px");
-    const toggleNavBar = () => {
-        setWidth((prevWidth) => (prevWidth === "0px" ? "20%" : "0px"));
-        changeMargin();
-    };
-
-    const changeMargin = () => {
-        setMargin(width === "0px" ? "20%" : "0px");
-    };
-
     return (
         <div className="Container">
-            <NavBar width={width} CloseNavBar={toggleNavBar} />
-            {width === "0px" ? (
-                <div>
-                    <button className="MenuButton" onClick={toggleNavBar}>
-                        <img className="MenuIcon" src={MenuIcon} alt="" />
-                    </button>
-                </div>
-            ) : null}
+            <NavBar />
 
-            <div className="Content" style={{ marginLeft: margin }}>
+            <div className="Content">
                 <div className="Header__Container">
                     <HeaderComponent />
                 </div>
@@ -46,7 +24,7 @@ function App() {
                     <Route path="/settings" element={<SettingsPage />} />
                 </Routes>
             </div>
-            <div>
+            <div className="PhoneNavComponent__Container">
                 <PhoneNavComponent />
             </div>
         </div>

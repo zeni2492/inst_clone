@@ -1,27 +1,14 @@
 import { Link } from "react-router-dom";
 
-import MenuButton from "../assets/menu-svgrepo-com.svg";
 import UserDefault from "../assets/user-svgrepo-com.svg";
 import magnifier from "../assets/magnifier-svgrepo-com.svg";
 import feed from "../assets/feed.svg";
 import gear from "../assets/gear-svgrepo-com.svg";
 
-interface NavBarProps {
-    width: string;
-    CloseNavBar: () => void;
-}
-
-export const NavBar = ({ width, CloseNavBar }: NavBarProps) => {
+export const NavBar = () => {
     return (
-        <aside className="NavBar__Container" style={{ width }}>
+        <aside className="NavBar__Container">
             <div className="NavBar">
-                <button
-                    className="MenuButton NavBar__MenuButton"
-                    onClick={CloseNavBar}
-                >
-                    <img className="MenuIcon" src={MenuButton} alt="" />
-                </button>
-
                 <div className="NavBar__Content">
                     <div className="NavBar__User">
                         <img
@@ -34,12 +21,12 @@ export const NavBar = ({ width, CloseNavBar }: NavBarProps) => {
                     <div className="Profile">
                         <div className="Profile__Info">
                             <div className="Profile__media Profile__Posts">
-                                <p>100</p>
+                                <p>20</p>
                                 <h3>Posts</h3>
                             </div>
                             <div className="Profile__media Profile__Likes">
                                 <p>100</p>
-                                <h3>Likes</h3>
+                                <h3>Followers</h3>
                             </div>
                             <div className="Profile__media Profile__Following">
                                 <p>100</p>

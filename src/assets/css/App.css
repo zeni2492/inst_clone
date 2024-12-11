@@ -3,6 +3,7 @@
 }
 
 .Content {
+    width: 100%;
     flex: 1;
     overflow: hidden;
     margin: 12px 7px;
@@ -10,9 +11,18 @@
     margin-left: 12px;
 }
 
-.Header__Container {
+.Header {
     width: 100%;
+    position: relative;
+    z-index: 10;
+}
+
+.Header__Container {
+    width: 80%;
+    margin-left: 8px;
     text-align: center;
+    display: flex;
+    justify-content: end;
 }
 
 .Header__logo {
@@ -21,6 +31,7 @@
 }
 
 .NavBar__Container {
+    width: 20%;
     height: 100vh;
     background-color: rgb(253, 241, 255);
     backdrop-filter: blur(100px);
@@ -104,6 +115,7 @@
     width: 100%;
     display: flex;
     justify-content: center;
+    text-align: center;
     border-bottom: var(--default-border);
 }
 
@@ -111,9 +123,9 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    text-align: center;
     width: 100%;
-    gap: 50px;
-    margin-left: 15px;
+    gap: 24px;
     margin-top: 15px;
     margin-bottom: 15px;
 }
@@ -219,10 +231,17 @@
 .PhoneNavComponent__Link img {
     width: 20px;
 }
-
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1440px) {
+    .Profile__Info {
+        flex-direction: column;
+    }
     .NavBar__Container {
-        width: 0%;
+        width: 16%;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .NavBar__Container {
         display: none;
     }
     .MenuButton {
