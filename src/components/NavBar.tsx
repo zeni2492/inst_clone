@@ -92,6 +92,9 @@ export const NavBar = () => {
                             />
                             Settings
                         </Link>
+                        <Link to={"/auth"} className="navigation__link">
+                            <button className="NavBar__Exit">Exit</button>
+                        </Link>
                     </footer>
                 </div>
             </div>

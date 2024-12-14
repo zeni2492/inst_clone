@@ -1,6 +1,7 @@
 @import url("./App.css");
 @import url("./UserProfile.css");
 @import url("./Settings.css");
+@import url("./AuthPage.css");
 
 :root {
     --primary: #a974ff;
