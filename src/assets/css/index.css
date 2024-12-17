@@ -2,6 +2,7 @@
 @import url("./UserProfile.css");
 @import url("./Settings.css");
 @import url("./AuthPage.css");
+@import url("./Explore.css");
 
 :root {
     --primary: #a974ff;

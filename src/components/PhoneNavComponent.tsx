@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import UserDefault from "../assets/user-svgrepo-com.svg";
-import magnifier from "../assets/magnifier-svgrepo-com.svg";
-import feed from "../assets/feed.svg";
-import gear from "../assets/gear-svgrepo-com.svg";
-
+import UserDefault from "../assets//user-svgrepo-com.svg";
+import magnifier from "../assets/navIcons/magnifier-svgrepo-com.svg";
+import feed from "../assets/navIcons/feed.svg";
+import gear from "../assets/navIcons/gear-svgrepo-com.svg";
 //bottom phone navigation bar
-export const PhoneNavComponent = () => {
+export const PhoneNavComponent = ({ userID }: { userID: number }) => {
     return (
         <div className="PhoneNavComponent__Container">
             <div className="PhoneNavComponent">
@@ -22,7 +21,10 @@ export const PhoneNavComponent = () => {
                         <img src={gear} />
                         Settings
                     </Link>
-                    <Link className="PhoneNavComponent__Link" to={"/profile"}>
+                    <Link
+                        className="PhoneNavComponent__Link"
+                        to={`/profile/${userID}`}
+                    >
                         <img src={UserDefault} />
                         Profile
                     </Link>

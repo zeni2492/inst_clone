@@ -28,6 +28,8 @@
 .Header__logo {
     font-size: 2rem;
     font-weight: bold;
+
+    color: var(--dark);
 }
 
 .NavBar__Container {

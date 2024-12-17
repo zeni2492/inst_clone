@@ -11,7 +11,23 @@ import { AuthPage } from "./pages/AuthPage";
 import { HeaderComponent } from "./components/HeaderComponent";
 import { NavBar } from "./components/NavBar";
 import { PhoneNavComponent } from "./components/PhoneNavComponent";
+
 import DefaltUser from "./assets/user-svgrepo-com.svg";
+import { OtherProfilePage } from "./pages/OtherUserPage";
+
+export type UserState = {
+    userId: number;
+    username: string;
+    email: string;
+    photoUrl: string;
+};
+
+export type photo = {
+    id: number;
+    user_id: number;
+    photo_url: string;
+    description: string;
+};
 
 function App() {
     const location = useLocation(); //location hook to disable navbar on some pages
@@ -38,6 +54,7 @@ function App() {
                 {/* Routes */}
                 <Routes>
                     <Route index path="/" element={<MainPage />} />
+                    <Route path="/profile/:id" element={<OtherProfilePage />} />
                     <Route path="/find" element={<FindPage />} />
                     <Route
                         path={`/profile/${userId}`}
@@ -51,7 +68,7 @@ function App() {
                 </Routes>
             </div>
             <div className="PhoneNavComponent__Container">
-                <PhoneNavComponent />
+                <PhoneNavComponent userID={userId} />
             </div>
         </div>
     );

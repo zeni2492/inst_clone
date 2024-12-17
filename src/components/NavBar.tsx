@@ -1,13 +1,14 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import UserDefault from "../assets/user-svgrepo-com.svg";
-import magnifier from "../assets/magnifier-svgrepo-com.svg";
-import feed from "../assets/feed.svg";
-import gear from "../assets/gear-svgrepo-com.svg";
+import magnifier from "../assets/navIcons/magnifier-svgrepo-com.svg";
+import feed from "../assets/navIcons/feed.svg";
+import gear from "../assets/navIcons/gear-svgrepo-com.svg";
 import { useSelector } from "react-redux";
 import { UserState } from "../pages/ProfilePage";
 
 export const NavBar = ({ image }: { image: string }) => {
+    const navigate = useNavigate();
     const { username, userId } = useSelector(
         //getting data from redux
         (state: { user: UserState }) => state.user
@@ -18,7 +19,12 @@ export const NavBar = ({ image }: { image: string }) => {
             <div className="NavBar">
                 <div className="NavBar__Content">
                     <div className="NavBar__User">
-                        <img className="NavBar__Image" src={image} alt="" />
+                        <img
+                            className="NavBar__Image"
+                            onClick={() => navigate(`/profile/${userId}`)}
+                            src={image}
+                            alt=""
+                        />
                         <p className="NavBar__Username">{username || "User"}</p>
                     </div>
                     <div className="Profile">

@@ -1,0 +1,81 @@
+.FindPage {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.FindPage__Container {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 60px;
+}
+
+.FindPage__Users {
+    width: 80%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+}
+
+.FindPage__User {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid var(--primary);
+    margin-top: 12px;
+    border-radius: 10px;
+    height: 200px;
+    cursor: pointer;
+    overflow: hidden;
+    text-align: center;
+}
+
+.FindPage__avatar {
+    width: 100px;
+    height: 100px;
+    border: 4px solid var(--primary);
+    border-radius: 50%;
+    margin: 10px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.FindPage__Search {
+    width: 80%;
+}
+
+.FindPage__input {
+    font-size: 1.2rem;
+    background: none;
+    width: 100%;
+    border: 1px solid var(--primary);
+}
+
+.FindPage__input::placeholder {
+    color: var(--dark);
+}
+
+.FindPage__email {
+    margin-top: 8px;
+}
+
+@media screen and (max-width: 780px) {
+    .FindPage__Users {
+        grid-template-columns: 1fr 1fr;
+    }
+    .FindPage {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .FindPage__Users {
+        grid-template-columns: 1fr;
+    }
+}

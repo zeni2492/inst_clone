@@ -1,43 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-
+import { photo, UserState } from "../App";
 import { ImagesComponent } from "../components/ProfileImagesComponent";
 
 import DefaultUser from "../assets/user-svgrepo-com.svg";
 
 //temporary images for profile
-export type FetchedData = {
-    id: number;
-    name: string;
-    status: string;
-    species: string;
-    type: string;
-    gender: string;
-    origin: {
-        name: string;
-        url: string;
-    };
-    location: {
-        name: string;
-        url: string;
-    };
-    image: string;
-    episode: [];
-    url: string;
-    created: string;
-};
-
-export type UserState = {
-    userId: number | null;
-    username: string;
-    email: string;
-    photoUrl: string;
-};
 
 export const ProfilePage = ({ image }: { image: string }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [PhotoList, setPhotoList] = useState<FetchedData[]>([]); // list of images
+    const [PhotoList, setPhotoList] = useState<photo[]>([]); // list of images
     const [follow, setFollow] = useState(false); //follow state
     const { username } = useSelector(
         //getting data from redux
@@ -49,17 +22,15 @@ export const ProfilePage = ({ image }: { image: string }) => {
     }
     const getImages = async () => {
         const response = await axios.get(
-            "https://rickandmortyapi.com/api/character" //query to get images
+            "http://localhost:2492/api/photo/getAll" //query to get images
         );
-        setPhotoList(response.data.results); //set images
+        setPhotoList(response.data); //set images
         setIsLoading(false); // download is finished
     };
 
     useEffect(() => {
         getImages();
     }, []);
-
-    console.log(PhotoList);
 
     if (isLoading) {
         return <h1>Loading...</h1>;
@@ -102,6 +73,13 @@ export const ProfilePage = ({ image }: { image: string }) => {
                             </li>
                         </ul>
                     </div>
+
+                    <nav className="ProfilePage__new-post">
+                        <button type="button" className="ProfilePage__button">
+                            New Post
+                        </button>
+                    </nav>
+
                     <div className="ProfilePage__Images">
                         <ImagesComponent image={PhotoList} />
                     </div>

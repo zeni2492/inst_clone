@@ -16,6 +16,7 @@ app.use(fileUpload()); // middleware for uploading files
 app.use(express.json()); // middleware for parsing json
 app.use(bodyParser.json()); // middleware for parsing json
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // middleware for serving static files
+app.use("/photos", express.static(path.join(__dirname, "photos"))); // middleware for serving static files
 
 app.use("/api", router); // using routes
 

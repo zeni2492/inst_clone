@@ -15,6 +15,15 @@ export const AuthPage = () => {
     // const dispatch = UseDispatch();
     const Login = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        if (username === "" || password === "") {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long");
+            return;
+        }
         try {
             const response = await fetch(
                 "http://localhost:2492/api/user/login", //query to login user
@@ -60,6 +69,15 @@ export const AuthPage = () => {
 
     const Registration = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+        if (username === "" || email === "" || password === "") {
+            alert("Please fill in all fields");
+            return;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long");
+            return;
+        }
         try {
             const response = await fetch(
                 "http://localhost:2492/api/user/register", //query to register user
@@ -78,8 +96,18 @@ export const AuthPage = () => {
             );
 
             if (response.status === 201) {
+                const data = await response.json();
+                dispatch(
+                    //save user data in redux
+                    setUser({
+                        userId: data.user.id,
+                        username: data.user.username,
+                        email: data.user.email,
+                        photoUrl: data.user.photo_url, // Добавляем фото пользователя, если оно есть
+                    })
+                );
                 // if response status is 201 then user is registered and navigate to feed
-                window.location.href = "http://localhost:3000/feed";
+                navigate("/");
             } else {
                 const data = await response.json();
                 alert(data.message || "Something went wrong");

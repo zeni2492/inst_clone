@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-import { FetchedData } from "../pages/ProfilePage";
 import filledHeart from "../assets/PostActions/filledHearth.svg";
 import emptyHeart from "../assets/PostActions/emptyHearth.svg";
 import comment from "../assets/PostActions/comment.svg";
 import share from "../assets/PostActions/share.svg";
+import { photo } from "../App";
 
-export function ImagesComponent({ image }: { image: FetchedData[] }) {
+export function ImagesComponent({ image }: { image: photo[] }) {
     // state for storing likes
     const [likes, setLikes] = useState<{ [key: number]: boolean }>({});
 
@@ -26,8 +26,7 @@ export function ImagesComponent({ image }: { image: FetchedData[] }) {
                         <img
                             onDoubleClick={() => likePhoto(photo.id)} // get the id of the photo
                             className="ProfilePage__Photo"
-                            src={photo.image}
-                            alt={photo.name}
+                            src={`http://localhost:2492${photo.photo_url}`}
                         />
                         <div className="PostActions__Container">
                             <div
