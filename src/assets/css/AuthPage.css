@@ -15,10 +15,12 @@
     height: 500px;
     border-radius: 10px;
     background-color: var(--primary);
+    box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+    position: relative;
 }
 .AuthPage__Title {
     position: absolute;
-    top: 260px;
+    top: 30px;
 }
 
 h1 {
@@ -42,11 +44,11 @@ h1 {
     align-items: center;
     flex-direction: column;
     margin: 0 auto;
+}
+
+.AuthPage__LoginContainer {
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-    border-right: 5px solid var(--dark);
-    border-top: 5px solid var(--dark);
-    border-bottom: 5px solid var(--dark);
 }
 
 .AuthPage__Form {
@@ -56,4 +58,185 @@ h1 {
     align-items: center;
     flex-direction: column;
     row-gap: 12px;
+    margin-top: 48px;
+}
+
+.AuthPage__LoginInput,
+.AuthPage__PasswordInput {
+    width: 80%;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--primary);
+    padding: 0 10px;
+    font-size: 1.2rem;
+    background: none;
+    color: black;
+}
+
+.AuthPage__LoginInput::placeholder,
+.AuthPage__PasswordInput::placeholder {
+    color: var(--dark);
+}
+
+.AuthPage__LoginButtonContainer {
+    width: 80%;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+.AuthPage__LoginButton {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+.AuthPage__HaveNoAccount {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.AuthPage__Create {
+    color: var(--primary);
+    cursor: pointer;
+    padding-left: 6px;
+}
+
+.AuthPage__SocialNetworksContainer {
+    width: 80%;
+}
+
+.AuthPage__Or {
+    margin-top: 12px;
+    width: 100%;
+    font-size: 1.2rem;
+    color: var(--dark);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.AuthPage__Or::before {
+    content: "";
+    width: 50px;
+    height: 2px;
+    background: var(--dark);
+    display: inline-block;
+    margin-right: 12px;
+}
+.AuthPage__Or::before {
+    content: "";
+    width: 50%;
+    height: 2px;
+    background: var(--dark);
+    display: inline-block;
+    margin-right: 12px;
+}
+
+.AuthPage__Or::after {
+    content: "";
+    width: 50%;
+    height: 2px;
+    background: var(--dark);
+    display: inline-block;
+    margin-left: 12px;
+}
+
+.AuthPage__SocialNetworks {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 12px;
+}
+
+.AuthPage__Google {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 12px;
+}
+
+.AuthPage__Social {
+    width: 100%;
+    height: 40px;
+    background: none;
+    border: 2px solid var(--primary);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    color: var(--dark);
+}
+.AuthPage__Social img {
+    width: 30px;
+    height: 30px;
+    margin-right: 6px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+#Registration {
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    color: var(white);
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+
+.AuthPage__Title {
+    top: 18px;
+}
+
+#Registration__AuthHalfText {
+    color: var(--primary);
+}
+
+#AuthPage__Registration {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+@media screen and (max-width: 780px) {
+    .AuthPage__Container {
+        width: 90%;
+    }
+    .AuthPage__Image {
+        display: none;
+    }
+
+    .AuthPage__Login {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .AuthPage__Form {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .AuthPage__Title {
+        text-align: center;
+        color: var(--primary);
+    }
 }

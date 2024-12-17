@@ -3,18 +3,23 @@ import { MainPage } from "./pages/MainPage";
 import { FindPage } from "./pages/FindPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SettingsPage } from "./pages/SettingPage";
-
+import { useSelector } from "react-redux";
 import { HeaderComponent } from "./components/HeaderComponent";
 import { NavBar } from "./components/NavBar";
 import { PhoneNavComponent } from "./components/PhoneNavComponent";
 import { AuthPage } from "./pages/AuthPage";
-
 function App() {
     const location = useLocation();
     const noNav = ["/auth"];
+    const { userId, photoUrl } = useSelector(
+        (state: { user: UserState }) => state.user
+    );
+
+    const image = `http://localhost:2492${photoUrl}`;
+
     return (
         <div className="Container">
-            {!noNav.includes(location.pathname) && <NavBar />}
+            {!noNav.includes(location.pathname) && <NavBar image={image} />}
 
             <div className="Content">
                 <div className="Header__Container">
@@ -23,8 +28,14 @@ function App() {
                 <Routes>
                     <Route index path="/" element={<MainPage />} />
                     <Route path="/find" element={<FindPage />} />
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/settings" element={<SettingsPage />} />
+                    <Route
+                        path={`/profile/${userId}`}
+                        element={<ProfilePage />}
+                    />
+                    <Route
+                        path="/settings/"
+                        element={<SettingsPage image={image} />}
+                    />
                     <Route path="/auth" element={<AuthPage />} />
                 </Routes>
             </div>

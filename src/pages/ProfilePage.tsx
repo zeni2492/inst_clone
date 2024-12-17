@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 import { ImagesComponent } from "../components/ProfileImagesComponent";
 
@@ -26,10 +27,21 @@ export type FetchedData = {
     created: string;
 };
 
+export type UserState = {
+    userId: number | null;
+    username: string;
+    email: string;
+    photoUrl: string;
+};
+
 export const ProfilePage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [PhotoList, setPhotoList] = useState<FetchedData[]>([]);
     const [follow, setFollow] = useState(false);
+    const { username, email, photoUrl } = useSelector(
+        (state: { user: UserState }) => state.user
+    );
+    console.log("User Data:", username, email, photoUrl);
 
     function Follow() {
         setFollow(!follow);
@@ -53,7 +65,7 @@ export const ProfilePage = () => {
     }
 
     const say = () => {
-        console.log("dasdadsd");
+        console.log(username);
     };
 
     return (
@@ -63,7 +75,7 @@ export const ProfilePage = () => {
                     <img
                         onClick={say}
                         className="ProfilePage__avatar"
-                        src={DefaultUser}
+                        src={photoUrl || DefaultUser}
                         alt=""
                     />
                     <div className="ProfilePage__Follow">
@@ -75,7 +87,7 @@ export const ProfilePage = () => {
                         </button>
                     </div>
                     <div className="ProfilePage__username">
-                        <h2>Username</h2>
+                        <h2>{username || "User"}</h2>
                     </div>
                     <div></div>
                     <div className="ProfilePage__statistics">

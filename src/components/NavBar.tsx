@@ -4,19 +4,21 @@ import UserDefault from "../assets/user-svgrepo-com.svg";
 import magnifier from "../assets/magnifier-svgrepo-com.svg";
 import feed from "../assets/feed.svg";
 import gear from "../assets/gear-svgrepo-com.svg";
+import { useSelector } from "react-redux";
+import { UserState } from "../pages/ProfilePage";
 
-export const NavBar = () => {
+export const NavBar = ({ image }: { image: string }) => {
+    const { username, userId } = useSelector(
+        (state: { user: UserState }) => state.user
+    );
+
     return (
         <aside className="NavBar__Container">
             <div className="NavBar">
                 <div className="NavBar__Content">
                     <div className="NavBar__User">
-                        <img
-                            className="NavBar__Image"
-                            src={UserDefault}
-                            alt=""
-                        />
-                        <p className="NavBar__Username">Username</p>
+                        <img className="NavBar__Image" src={image} alt="" />
+                        <p className="NavBar__Username">{username || "User"}</p>
                     </div>
                     <div className="Profile">
                         <div className="Profile__Info">
@@ -68,7 +70,7 @@ export const NavBar = () => {
                                 <li className="navigation__item">
                                     <Link
                                         className="navigation__link"
-                                        to={"/profile"}
+                                        to={`/profile/${userId}`}
                                     >
                                         <span className="navigation__icon">
                                             <img
