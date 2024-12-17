@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+// createting interface for user
 interface UserState {
     userId: number | null;
     username: string;
     email: string;
     photoUrl: string;
 }
-
+// intializing state
 const initialState: UserState = {
     userId: null,
     username: "",
@@ -14,26 +14,20 @@ const initialState: UserState = {
     photoUrl: "",
 };
 
+// creating user slice
+
 const userSlice = createSlice({
-    name: "user",
-    initialState,
+    name: "user", // name of the slice
+    initialState, // initial state
     reducers: {
-        setUser: (
-            state,
-            action: PayloadAction<{
-                id: number;
-                username: string;
-                email: string;
-                photoUrl: string;
-            }>
-        ) => {
-            state.userId = action.payload.id;
-            state.username = action.payload.username;
-            state.email = action.payload.email;
-            state.photoUrl = action.payload.photoUrl;
+        setUser: (state, action: PayloadAction<UserState>) => {
+            // setting user data in redux
+            return {
+                ...state,
+                ...action.payload,
+            };
         },
     },
 });
-
 export const { setUser } = userSlice.actions;
 export default userSlice.reducer;

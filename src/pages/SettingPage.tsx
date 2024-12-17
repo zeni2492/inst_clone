@@ -1,50 +1,53 @@
 import { useState } from "react";
-import User from "../assets/user-svgrepo-com.svg";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser } from "../storage/userSlice"; // Импорт действия Redux для обновления данных
-import { UserState } from "./ProfilePage";
+import { setUser } from "../storage/userSlice";
 
 export const SettingsPage = ({ image }: { image: string }) => {
-    const [name, setName] = useState<string>("User");
-    const [status, setStatus] = useState<string>("");
-    const [edit, setEdit] = useState(false);
+    const [name, setName] = useState<string>("User"); // user name state
+    const [status, setStatus] = useState<string>(""); // user status state
+    const [edit, setEdit] = useState(false); //enable edit mode
     const { username, userId } = useSelector(
         (state: { user: UserState }) => state.user
-    );
+    ); //getting data from redux
     const dispatch = useDispatch();
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0]; // Получаем файл из инпута
+        //uploading image by click on avatar
+        const file = event.target.files?.[0];
         if (file) {
-            const reader = new FileReader(); // Создаем экземпляр FileReader
-            reader.onloadend = () => {
-                // changeAvatar(reader.result as string); // Устанавливаем результат в состояние
-            };
-            reader.readAsDataURL(file); // Читаем файл как Data URL
-            changeAvatar(file); // Передаем файл в функцию для отправки на сервер
+            changeAvatar(file);
         }
     };
 
     const changeAvatar = async (file: File) => {
         try {
-            const formData = new FormData();
-            formData.append("image", file); // Добавляем изображение в FormData
+            const formData = new FormData(); // create a FormData object
+            formData.append("image", file); // append the image file
 
             const response = await fetch(
+                // query the server to change avatar
                 `http://localhost:2492/api/profile/settings/image/${userId}`,
                 {
                     method: "POST",
-                    body: formData, // Отправляем FormData
+                    body: formData,
                 }
             );
 
             const data = await response.json();
+
             if (data?.photoUrl) {
-                // Если сервер вернул photoUrl, обновляем его в стейте
-                dispatch(setUser({ ...data, photoUrl: data.photoUrl }));
+                // update user data in Redux
+                dispatch(
+                    setUser({
+                        userId,
+                        username,
+                        email: "",
+                        photoUrl: data.photoUrl, // update photoUrl
+                    })
+                );
             }
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error("Error changing avatar:", error);
         }
     };
 
@@ -54,22 +57,19 @@ export const SettingsPage = ({ image }: { image: string }) => {
                 <label className="SettingsPage__UserIcon">
                     <img
                         className="SettingsPage__Image"
-                        src={image || User} // Если изображение загружено, используем его, иначе фото из стейта или иконку по умолчанию
+                        src={image}
                         alt="User"
                     />
                     <input
                         type="file"
                         accept="image/*"
-                        onChange={handleImageChange} // Обработчик изменения
-                        style={{ display: "none" }} // Скрываем инпут
+                        onChange={handleImageChange}
+                        style={{ display: "none" }}
                     />
                 </label>
+
                 <div>
-                    <button
-                        onClick={() => {
-                            setEdit(!edit);
-                        }}
-                    >
+                    <button onClick={() => setEdit(!edit)}>
                         {edit ? "Save" : "Edit"}
                     </button>
                 </div>

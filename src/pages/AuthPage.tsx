@@ -17,13 +17,14 @@ export const AuthPage = () => {
         e.preventDefault();
         try {
             const response = await fetch(
-                "http://localhost:2492/api/user/login",
+                "http://localhost:2492/api/user/login", //query to login user
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
+                        // data to send to server
                         username: username,
                         password: password,
                     }),
@@ -34,14 +35,15 @@ export const AuthPage = () => {
                 const data = await response.json();
                 // Сохраняем данные о пользователе в Redux
                 dispatch(
+                    //save user data in redux
                     setUser({
-                        id: data.user.id,
+                        userId: data.user.id,
                         username: data.user.username,
                         email: data.user.email,
                         photoUrl: data.user.photo_url, // Добавляем фото пользователя, если оно есть
                     })
                 );
-                console.log(data.user); // Перенаправление на страницу
+                // if response status is 200 then user is logged in and navigate to feed
                 navigate("/");
             } else {
                 const data = await response.json();
@@ -51,6 +53,7 @@ export const AuthPage = () => {
             console.error("Error:", error);
             alert("Server error. Please try again later.");
         }
+        //clear input fields
         setUserName("");
         setPassword("");
     };
@@ -59,13 +62,14 @@ export const AuthPage = () => {
         e.preventDefault();
         try {
             const response = await fetch(
-                "http://localhost:2492/api/user/register",
+                "http://localhost:2492/api/user/register", //query to register user
                 {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
+                        // data to send to server
                         username: username,
                         email: email,
                         password: password,
@@ -74,6 +78,7 @@ export const AuthPage = () => {
             );
 
             if (response.status === 201) {
+                // if response status is 201 then user is registered and navigate to feed
                 window.location.href = "http://localhost:3000/feed";
             } else {
                 const data = await response.json();
@@ -83,23 +88,25 @@ export const AuthPage = () => {
             console.error("Error:", error);
             alert("Server error. Please try again later.");
         }
+        //clear input fields
         setUserName("");
         setEmail("");
         setPassword("");
     };
 
+    //toggle between login and registration
     const toggleRegistration = (e: React.MouseEvent<HTMLButtonElement>) => {
         setIsLogging(!isLogging);
         e.preventDefault();
     };
     return (
         <div className="AuthPage">
-            {!isLogging ? (
+            {!isLogging ? ( //if isLogging is false then show login form
                 <div className="AuthPage__Container">
                     <h1 className="AuthPage__Title">
                         Auth<span className="AuthPage__AuthHalfText">Page</span>
                     </h1>
-                    <div className="AuthPage__Image"></div>
+                    <aside className="AuthPage__Image"></aside>
                     <div className="AuthPage__Login AuthPage__LoginContainer">
                         <form className="AuthPage__Form" action="">
                             <input
@@ -149,6 +156,7 @@ export const AuthPage = () => {
                     </div>
                 </div>
             ) : (
+                //if isLogging is true then show registration form
                 <div className="AuthPage__Container">
                     <h1 className="AuthPage__Title" id="Registration">
                         <span id="Registration__AuthHalfText">Auth</span>
@@ -211,7 +219,7 @@ export const AuthPage = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="AuthPage__Image"></div>
+                    <aside className="AuthPage__Image"></aside>
                 </div>
             )}
         </div>

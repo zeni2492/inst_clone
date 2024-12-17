@@ -1,6 +1,7 @@
-const Pool = require("pg").Pool;
+const Pool = require("pg").Pool; // lib for connecting to database
 
 const pool = new Pool({
+    //data for connection to database
     label: "instagram",
     host: "localhost",
     user: "postgres",

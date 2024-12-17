@@ -7,14 +7,14 @@ import comment from "../assets/PostActions/comment.svg";
 import share from "../assets/PostActions/share.svg";
 
 export function ImagesComponent({ image }: { image: FetchedData[] }) {
-    // Состояние для отслеживания лайков
+    // state for storing likes
     const [likes, setLikes] = useState<{ [key: number]: boolean }>({});
 
-    // Функция для смены состояния лайка
+    // function for handling likes
     function likePhoto(id: number) {
         setLikes((prevLikes) => ({
             ...prevLikes,
-            [id]: !prevLikes[id], // Меняем состояние лайка для конкретного id
+            [id]: !prevLikes[id], // switches the state of the like for the given id
         }));
     }
 
@@ -24,7 +24,7 @@ export function ImagesComponent({ image }: { image: FetchedData[] }) {
                 {image.map((photo) => (
                     <div key={photo.id}>
                         <img
-                            onDoubleClick={() => likePhoto(photo.id)} // Передаем id в функцию
+                            onDoubleClick={() => likePhoto(photo.id)} // get the id of the photo
                             className="ProfilePage__Photo"
                             src={photo.image}
                             alt={photo.name}
@@ -36,6 +36,7 @@ export function ImagesComponent({ image }: { image: FetchedData[] }) {
                             >
                                 <img
                                     src={
+                                        // display filled or empty heart depending on the state
                                         likes[photo.id]
                                             ? filledHeart
                                             : emptyHeart

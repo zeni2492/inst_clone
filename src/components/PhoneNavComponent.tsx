@@ -4,6 +4,7 @@ import magnifier from "../assets/magnifier-svgrepo-com.svg";
 import feed from "../assets/feed.svg";
 import gear from "../assets/gear-svgrepo-com.svg";
 
+//bottom phone navigation bar
 export const PhoneNavComponent = () => {
     return (
         <div className="PhoneNavComponent__Container">

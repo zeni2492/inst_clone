@@ -9,6 +9,7 @@ import { UserState } from "../pages/ProfilePage";
 
 export const NavBar = ({ image }: { image: string }) => {
     const { username, userId } = useSelector(
+        //getting data from redux
         (state: { user: UserState }) => state.user
     );
 

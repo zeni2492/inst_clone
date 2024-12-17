@@ -1,26 +1,25 @@
-require("dotenv").config();
+require("dotenv").config(); // lib for loading env variables
 
-const fileUpload = require("express-fileupload");
-const express = require("express");
-const cors = require("cors");
-const path = require("path");
+const fileUpload = require("express-fileupload"); // lib for uploading files
+const express = require("express"); // lib for creating server
+const cors = require("cors"); // lib for cors
+const path = require("path"); // lib for path
 
-const pool = require("./db");
-const bodyParser = require("body-parser");
-const router = require("./routes/index");
+const bodyParser = require("body-parser"); // lib for parsing json
+const router = require("./routes/index"); // routes
 
-const app = express();
-const port = process.env.PORT || 5000;
+const app = express(); // initializing express
+const port = process.env.PORT || 5000; // port
 
-app.use(cors());
-app.use(fileUpload());
-app.use(express.json());
-app.use(express.static(path.resolve(__dirname, "uploads")));
-app.use(bodyParser.json());
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(cors()); // middleware for cors
+app.use(fileUpload()); // middleware for uploading files
+app.use(express.json()); // middleware for parsing json
+app.use(express.static(path.resolve(__dirname, "uploads"))); // middleware for static files
+app.use(bodyParser.json()); // middleware for parsing json
 
-app.use("/api", router);
+app.use("/api", router); // using routes
 
 app.listen(port, () => {
+    // starting server
     console.log(`Server running on port ${port}`);
 });

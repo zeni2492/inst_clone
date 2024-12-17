@@ -10,9 +10,9 @@ const rootReducer = combineReducers({
 
 // Конфигурация persist
 const persistConfig = {
-    key: "root",
-    storage,
-    whitelist: ["user"],
+    key: "root", // key for storage
+    storage, // storage
+    whitelist: ["user"], // only user will be persisted
 };
 
 // Оборачиваем редьюсер с persistReducer
@@ -23,17 +23,11 @@ const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: {
-                ignoredActions: [
-                    "persist/PERSIST",
-                    "persist/REHYDRATE",
-                    "persist/REGISTER",
-                ],
-            },
+            serializableCheck: false, // disable default serializableCheck
         }),
 });
 
-// Создаем persistor
+// create persistor
 const persistor = persistStore(store);
 
 export { store, persistor };

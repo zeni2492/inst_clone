@@ -6,6 +6,7 @@ import { ImagesComponent } from "../components/ProfileImagesComponent";
 
 import DefaultUser from "../assets/user-svgrepo-com.svg";
 
+//temporary images for profile
 export type FetchedData = {
     id: number;
     name: string;
@@ -34,24 +35,24 @@ export type UserState = {
     photoUrl: string;
 };
 
-export const ProfilePage = () => {
+export const ProfilePage = ({ image }: { image: string }) => {
     const [isLoading, setIsLoading] = useState(true);
-    const [PhotoList, setPhotoList] = useState<FetchedData[]>([]);
-    const [follow, setFollow] = useState(false);
-    const { username, email, photoUrl } = useSelector(
+    const [PhotoList, setPhotoList] = useState<FetchedData[]>([]); // list of images
+    const [follow, setFollow] = useState(false); //follow state
+    const { username } = useSelector(
+        //getting data from redux
         (state: { user: UserState }) => state.user
     );
-    console.log("User Data:", username, email, photoUrl);
 
     function Follow() {
         setFollow(!follow);
     }
     const getImages = async () => {
         const response = await axios.get(
-            "https://rickandmortyapi.com/api/character"
+            "https://rickandmortyapi.com/api/character" //query to get images
         );
-        setPhotoList(response.data.results);
-        setIsLoading(false);
+        setPhotoList(response.data.results); //set images
+        setIsLoading(false); // download is finished
     };
 
     useEffect(() => {
@@ -64,18 +65,13 @@ export const ProfilePage = () => {
         return <h1>Loading...</h1>;
     }
 
-    const say = () => {
-        console.log(username);
-    };
-
     return (
         <main className="ProfilePage__container">
             <div className="ProfilePage">
                 <div className="ProfilePage__user">
                     <img
-                        onClick={say}
                         className="ProfilePage__avatar"
-                        src={photoUrl || DefaultUser}
+                        src={image.length > 0 ? image : DefaultUser}
                         alt=""
                     />
                     <div className="ProfilePage__Follow">
