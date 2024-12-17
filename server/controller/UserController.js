@@ -97,13 +97,29 @@ class UserController {
         }
     }
 
-    async Get(req, res) {
+    async GetUserById(req, res) {
         // get user by id
-        const { id } = req.query;
-        const user = await pool.query("SELECT * FROM users WHERE id = $1", [
-            id,
-        ]);
-        res.status(200).json(user.rows[user.rows.length - 1]);
+        try {
+            const { id } = req.query;
+
+            const user = await pool.query("SELECT * FROM users WHERE id = $1", [
+                id,
+            ]);
+            if (user.rows.length === 0) {
+                return res.status(404).json({ message: "User not found" });
+            }
+
+            res.status(200).json(user.rows[0]);
+        } catch (err) {
+            console.log("Server error:", err);
+            res.status(500).json({ message: "Server error" });
+        }
+    }
+
+    async GetAll(req, res) {
+        // get all users
+        const users = await pool.query("SELECT * FROM users");
+        res.status(200).json(users.rows);
     }
 }
 
