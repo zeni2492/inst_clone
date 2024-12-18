@@ -4,11 +4,11 @@ Here you must register or login if you have account
 to register you need to insert pass with more then 6 letters
 http://localhost:3000/AuthPage
 
+IN PROGRESS MainPage
+http://localhost:3000/
+
 Page to find users
 http://localhost:3000/FindPage
-
-IN PROGRESS
-http://localhost:3000/MainPAge
 
 this route is for other users account to watch
 http://localhost:3000/profile/:id 
