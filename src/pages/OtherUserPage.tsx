@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { photo } from "../App";
+import { ImagesComponent } from "../components/ProfileImagesComponent";
+import DefaulUser from "../assets/user-svgrepo-com.svg";
 
 type User = {
     username: string;
@@ -9,11 +10,17 @@ type User = {
     photo_url: string;
 };
 
-export const OtherProfilePage = () => {
+export const OtherProfilePage = ({ photo }: { photo: string }) => {
     const { id } = useParams(); // Достаем параметр id из URL
     const [user, setUser] = useState<null | User>(null); // Состояние для хранения информации о пользователе
     const [loading, setLoading] = useState(true); // Состояние для отображения спиннера
     const [Photos, setPhotos] = useState([]);
+    const [follow, setFollow] = useState(false); //follow state
+
+    function Follow() {
+        setFollow(!follow);
+    }
+
     const fetchUser = async () => {
         try {
             const response = await fetch(
@@ -53,30 +60,49 @@ export const OtherProfilePage = () => {
     if (!user) return <div>Пользователь не найден</div>; // Если пользователь не найден, выводим сообщение
 
     return (
-        <div className="OtherProfilePage">
-            <div className="OtherProfilePage__Container">
-                <img
-                    className="OtherProfilePage__Avatar"
-                    src={`http://localhost:2492${user.photo_url}`}
-                    alt="Avatar"
-                />
-                <div className="OtherProfilePage__Header">
-                    <h2>{user.username}</h2>
-                    <p>{user.email}</p>
-                </div>
-                <div className="OtherProfilePage__Info">
-                    {Photos.map((photo: photo) => (
-                        <div key={photo.id}>
-                            <img
-                                className="OtherProfilePage__Photo"
-                                src={`http://localhost:2492${photo.photo_url}`}
-                                alt="Photo"
-                            />
-                            <p>{photo.description}</p>
-                        </div>
-                    ))}
+        <main className="ProfilePage__container">
+            <div className="ProfilePage">
+                <div className="ProfilePage__user">
+                    <img
+                        className="ProfilePage__avatar"
+                        src={
+                            user.photo_url ? photo + user.photo_url : DefaulUser
+                        }
+                        alt=""
+                    />
+                    <div className="ProfilePage__Follow">
+                        <button
+                            onClick={Follow}
+                            className="ProfilePage__Follow-button"
+                        >
+                            {follow ? "✓" : "+"}
+                        </button>
+                    </div>
+                    <div className="ProfilePage__username">
+                        <h2>{user.username || "User"}</h2>
+                    </div>
+                    <div></div>
+                    <div className="ProfilePage__statistics PersonalPage_Statistics">
+                        <ul className="ProfilePage__statsics-list">
+                            <li className="ProfilePage__statistics-item">
+                                <h2>Followers</h2>
+                                <p>100</p>
+                            </li>
+                            <li className="ProfilePage__statistics-item">
+                                <h2>Posts</h2>
+                                <p>{Photos.length}</p>
+                            </li>
+                            <li className="ProfilePage__statistics-item">
+                                <h2>Follows</h2>
+                                <p>100</p>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ImagesComponent image={Photos} />
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
     );
 };

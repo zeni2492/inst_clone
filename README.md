@@ -1,50 +1,30 @@
-# React + TypeScript + Vite
+In this instagram clone tou have 6 pages
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Here you must register or login if you have account
+to register you need to insert pass with more then 6 letters
+http://localhost:3000/AuthPage
 
-Currently, two official plugins are available:
+Page to find users
+http://localhost:3000/FindPage
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+IN PROGRESS
+http://localhost:3000/MainPAge
 
-## Expanding the ESLint configuration
+this route is for other users account to watch
+http://localhost:3000/profile/:id
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+this route is for your personal page
+http://localhost:3000/profile/{userId}
 
-- Configure the top-level `parserOptions` property like this:
+this page in progress too but i added a function to switch profile images
+http://localhost:3000/settingPage
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+On server side we have a few api who work with client side that i wrote before
+dataBase : PostgresQL
+server based on express
+it have a couples folder to storage images by user in folder uploads storaging avarars and in photos it storage the photos that users post on his page
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+TODOLIST:
+Add a upload function from client to server
+add the ability to subscribe on other people and writing commentaries
+add the ability to put likes on post and show the numbers of likes

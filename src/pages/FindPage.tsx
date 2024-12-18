@@ -14,6 +14,8 @@ export const FindPage = () => {
     const [Search, setSearch] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate();
+
+    //query to get all users
     const getUsers = async () => {
         const response = await fetch("http://localhost:2492/api/user/getAll");
         const data = await response.json();
@@ -27,10 +29,12 @@ export const FindPage = () => {
 
     useEffect(() => {
         if (Search === "") {
-            setSearchResults(users);
+            setSearchResults(users); // if search is empty, show all users
         } else {
-            const results = users.filter((user: User) =>
-                user.username.toLowerCase().includes(Search.toLowerCase())
+            const results = users.filter(
+                (
+                    user: User // filter users by nickname
+                ) => user.username.toLowerCase().includes(Search.toLowerCase())
             );
             setSearchResults(results);
         }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../storage/userSlice";
+import { UserState } from "../App";
 
 export const SettingsPage = ({ image }: { image: string }) => {
     const [name, setName] = useState<string>("User"); // user name state

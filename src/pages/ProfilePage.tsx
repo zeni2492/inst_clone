@@ -45,14 +45,6 @@ export const ProfilePage = ({ image }: { image: string }) => {
                         src={image.length > 0 ? image : DefaultUser}
                         alt=""
                     />
-                    <div className="ProfilePage__Follow">
-                        <button
-                            onClick={Follow}
-                            className="ProfilePage__Follow-button"
-                        >
-                            {follow ? "✓" : "+"}
-                        </button>
-                    </div>
                     <div className="ProfilePage__username">
                         <h2>{username || "User"}</h2>
                     </div>

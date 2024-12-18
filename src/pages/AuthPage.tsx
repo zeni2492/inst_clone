@@ -12,9 +12,10 @@ export const AuthPage = () => {
     const [username, setUserName] = useState("");
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    // const dispatch = UseDispatch();
+
     const Login = async (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
+
         if (username === "" || password === "") {
             alert("Please fill in all fields");
             return;
@@ -24,6 +25,7 @@ export const AuthPage = () => {
             alert("Password must be at least 6 characters long");
             return;
         }
+
         try {
             const response = await fetch(
                 "http://localhost:2492/api/user/login", //query to login user

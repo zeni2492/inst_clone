@@ -54,7 +54,10 @@ function App() {
                 {/* Routes */}
                 <Routes>
                     <Route index path="/" element={<MainPage />} />
-                    <Route path="/profile/:id" element={<OtherProfilePage />} />
+                    <Route
+                        path="/profile/:id"
+                        element={<OtherProfilePage photo={image} />}
+                    />
                     <Route path="/find" element={<FindPage />} />
                     <Route
                         path={`/profile/${userId}`}

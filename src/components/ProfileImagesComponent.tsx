@@ -22,14 +22,14 @@ export function ImagesComponent({ image }: { image: photo[] }) {
         <div>
             <div className="ProfilePage__Photos">
                 {image.map((photo) => (
-                    <div key={photo.id}>
+                    <div className="ProfilePage__PhotoContainer" key={photo.id}>
                         <img
                             onDoubleClick={() => likePhoto(photo.id)} // get the id of the photo
                             className="ProfilePage__Photo"
                             src={`http://localhost:2492${photo.photo_url}`}
                         />
                         <div className="PostActions__Container">
-                            <div
+                            {/* <div
                                 onClick={() => likePhoto(photo.id)}
                                 className="PostActions"
                             >
@@ -48,7 +48,7 @@ export function ImagesComponent({ image }: { image: photo[] }) {
                             </div>
                             <div className="PostActions">
                                 <img src={share} alt="" />
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 ))}
