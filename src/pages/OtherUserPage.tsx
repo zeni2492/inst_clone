@@ -42,8 +42,6 @@ export const OtherProfilePage = ({ photo }: { photo: string }) => {
                 `http://localhost:2492/api/photo/getAllUserPhotos/${id}`
             );
             const data = await response.json();
-            console.log(data);
-
             setPhotos(data);
         } catch (error) {
             console.error("Error fetching photos:", error);

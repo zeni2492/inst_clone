@@ -3,6 +3,7 @@
 @import url("./Settings.css");
 @import url("./AuthPage.css");
 @import url("./Explore.css");
+@import url("./Modal.css");
 
 :root {
     --primary: #a974ff;

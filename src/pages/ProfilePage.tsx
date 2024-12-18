@@ -11,18 +11,14 @@ import DefaultUser from "../assets/user-svgrepo-com.svg";
 export const ProfilePage = ({ image }: { image: string }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [PhotoList, setPhotoList] = useState<photo[]>([]); // list of images
-    const [follow, setFollow] = useState(false); //follow state
-    const { username } = useSelector(
+    const { username, userId } = useSelector(
         //getting data from redux
         (state: { user: UserState }) => state.user
     );
 
-    function Follow() {
-        setFollow(!follow);
-    }
     const getImages = async () => {
         const response = await axios.get(
-            "http://localhost:2492/api/photo/getAll" //query to get images
+            `http://localhost:2492/api/photo/getAllUserPhotos/${userId}` //query to get images
         );
         setPhotoList(response.data); //set images
         setIsLoading(false); // download is finished
