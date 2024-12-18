@@ -5,7 +5,7 @@ import magnifier from "../assets/navIcons/magnifier-svgrepo-com.svg";
 import feed from "../assets/navIcons/feed.svg";
 import gear from "../assets/navIcons/gear-svgrepo-com.svg";
 import { useSelector } from "react-redux";
-import { UserState } from "../pages/ProfilePage";
+import { UserState } from "../App";
 
 export const NavBar = ({ image }: { image: string }) => {
     const navigate = useNavigate();
