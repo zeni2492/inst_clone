@@ -3,6 +3,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { photo, UserState } from "../App";
 import { ImagesComponent } from "../components/ProfileImagesComponent";
+import { UploadPhotoModal } from "../components/UploadPhotoModal";
 
 import DefaultUser from "../assets/user-svgrepo-com.svg";
 
@@ -10,6 +11,7 @@ import DefaultUser from "../assets/user-svgrepo-com.svg";
 
 export const ProfilePage = ({ image }: { image: string }) => {
     const [isLoading, setIsLoading] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
     const [PhotoList, setPhotoList] = useState<photo[]>([]); // list of images
     const { username, userId } = useSelector(
         //getting data from redux
@@ -26,7 +28,7 @@ export const ProfilePage = ({ image }: { image: string }) => {
 
     useEffect(() => {
         getImages();
-    }, []);
+    }, [PhotoList]);
 
     if (isLoading) {
         return <h1>Loading...</h1>;
@@ -63,7 +65,11 @@ export const ProfilePage = ({ image }: { image: string }) => {
                     </div>
 
                     <nav className="ProfilePage__new-post">
-                        <button type="button" className="ProfilePage__button">
+                        <button
+                            type="button"
+                            onClick={() => setIsOpen(true)}
+                            className="ProfilePage__button"
+                        >
                             New Post
                         </button>
                     </nav>
@@ -73,6 +79,10 @@ export const ProfilePage = ({ image }: { image: string }) => {
                     </div>
                 </div>
             </div>
+            <UploadPhotoModal
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+            />
         </main>
     );
 };

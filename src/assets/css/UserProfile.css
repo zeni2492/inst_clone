@@ -144,6 +144,10 @@
 
 .ProfilePage__button {
     color: white;
+    background: var(--primary);
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
     font-size: 1.2rem;
     font-weight: bold;
 }

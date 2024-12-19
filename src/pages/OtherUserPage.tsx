@@ -10,7 +10,7 @@ type User = {
     photo_url: string;
 };
 
-export const OtherProfilePage = ({ photo }: { photo: string }) => {
+export const OtherProfilePage = () => {
     const { id } = useParams(); // Достаем параметр id из URL
     const [user, setUser] = useState<null | User>(null); // Состояние для хранения информации о пользователе
     const [loading, setLoading] = useState(true); // Состояние для отображения спиннера
@@ -64,7 +64,9 @@ export const OtherProfilePage = ({ photo }: { photo: string }) => {
                     <img
                         className="ProfilePage__avatar"
                         src={
-                            user.photo_url ? photo + user.photo_url : DefaulUser
+                            user.photo_url
+                                ? `http://localhost:2492${user.photo_url}`
+                                : DefaulUser
                         }
                         alt=""
                     />

@@ -60,10 +60,11 @@ class PhotoController {
         }
     }
 
-    getAllUserPhotos(req, res) {
+    async getAllUserPhotos(req, res) {
         try {
             const { user_id } = req.params;
-            pool.query("SELECT * FROM photos WHERE user_id = $1", [user_id])
+            await pool
+                .query("SELECT * FROM photos WHERE user_id = $1", [user_id])
                 .then((result) => {
                     res.status(200).json(result.rows);
                 })
@@ -84,6 +85,64 @@ class PhotoController {
         } catch (error) {
             console.error("Ошибка при получении всех фотографий:", error);
             res.status(500).json({ message: "Ошибка сервера" });
+        }
+    }
+
+    async UploadComment(req, res) {
+        const { user_id, photo_id, comment_text } = req.body;
+
+        try {
+            if (!comment_text) {
+                return res
+                    .status(400)
+                    .json({ message: "comment cannot be empty" });
+            }
+
+            const data = await pool.query(
+                `INSERT INTO photo_comments (user_id,photo_id,comment_text) VALUES ($1,$2,$3) RETURNING *`,
+                [user_id, photo_id, comment_text]
+            );
+
+            res.status(201).json(data.rows[0]);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+    async getComments(req, res) {
+        const { photo_id } = req.params; // Получаем photo_id из параметров
+
+        try {
+            const result = await pool.query(
+                `SELECT 
+                    photo_comments.id AS comment_id, 
+                    photo_comments.comment_text, 
+                    photo_comments.created_at, 
+                    users.id AS user_id, 
+                    users.username, 
+                    users.photo_url 
+                 FROM 
+                    photo_comments 
+                 JOIN 
+                    users 
+                 ON 
+                    photo_comments.user_id = users.id 
+                 WHERE 
+                    photo_comments.photo_id = $1 
+                 ORDER BY 
+                    photo_comments.created_at DESC;`,
+                [photo_id] // Подставляем photo_id в SQL-запрос
+            );
+
+            // Если комментариев нет, возвращаем пустой массив
+            if (result.rows.length === 0) {
+                return res.status(200).json({ comments: [] });
+            }
+
+            // Возвращаем список комментариев
+            res.status(200).json({ comments: result.rows });
+        } catch (e) {
+            console.error("Ошибка при получении комментариев:", e);
+            res.status(500).json({ message: "Server error" });
         }
     }
 }

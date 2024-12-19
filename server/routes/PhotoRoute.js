@@ -9,4 +9,8 @@ route.get("/getOne/:id", PhotoController.getPhoto);
 route.get("/getAll", PhotoController.getAll);
 route.get("/getAllUserPhotos/:user_id", PhotoController.getAllUserPhotos);
 
+route.post("/comment", PhotoController.UploadComment);
+
+route.get("/getComments/:photo_id", PhotoController.getComments);
+
 module.exports = route;

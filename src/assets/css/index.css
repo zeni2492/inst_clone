@@ -4,6 +4,7 @@
 @import url("./AuthPage.css");
 @import url("./Explore.css");
 @import url("./Modal.css");
+@import url("./UploadFileModal.css");
 
 :root {
     --primary: #a974ff;

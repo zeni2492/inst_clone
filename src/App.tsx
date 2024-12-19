@@ -19,7 +19,8 @@ export type UserState = {
     userId: number;
     username: string;
     email: string;
-    photoUrl: string;
+    photoUrl?: string;
+    photo_url?: string;
 };
 
 export type photo = {
@@ -54,10 +55,7 @@ function App() {
                 {/* Routes */}
                 <Routes>
                     <Route index path="/" element={<MainPage />} />
-                    <Route
-                        path="/profile/:id"
-                        element={<OtherProfilePage photo={image} />}
-                    />
+                    <Route path="/profile/:id" element={<OtherProfilePage />} />
                     <Route path="/find" element={<FindPage />} />
                     <Route
                         path={`/profile/${userId}`}
