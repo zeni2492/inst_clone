@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 import { photo, UserState } from "../App";
 import { ImagesComponent } from "../components/ProfileImagesComponent";
 import { UploadPhotoModal } from "../components/UploadPhotoModal";
-
+import { getSubscribers, getSubscriptions } from "../api/api";
+import { subscriberType } from "../App";
 import DefaultUser from "../assets/user-svgrepo-com.svg";
 
 //temporary images for profile
@@ -12,7 +13,9 @@ import DefaultUser from "../assets/user-svgrepo-com.svg";
 export const ProfilePage = ({ image }: { image: string }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [isOpen, setIsOpen] = useState(false);
+    const [Subscribers, setSubscribers] = useState<subscriberType[]>([]);
     const [PhotoList, setPhotoList] = useState<photo[]>([]); // list of images
+    const [Subscriptions, setSubsription] = useState([]);
     const { username, userId } = useSelector(
         //getting data from redux
         (state: { user: UserState }) => state.user
@@ -26,9 +29,32 @@ export const ProfilePage = ({ image }: { image: string }) => {
         setIsLoading(false); // download is finished
     };
 
+    const subscribers = async () => {
+        const response = await getSubscribers(
+            "http://localhost:2492/api/social/getSubscribers",
+            userId
+        );
+        const data = response.subscribers;
+        if (!data) {
+            return;
+        }
+        setSubscribers(data);
+    };
+
+    const subscriptions = async () => {
+        const response = await getSubscriptions(userId);
+        const data = response.subscriptions;
+        if (!data) {
+            return;
+        }
+        setSubsription(data);
+    };
+
     useEffect(() => {
         getImages();
-    }, [PhotoList]);
+        subscribers();
+        subscriptions();
+    }, []);
 
     if (isLoading) {
         return <h1>Loading...</h1>;
@@ -51,7 +77,7 @@ export const ProfilePage = ({ image }: { image: string }) => {
                         <ul className="ProfilePage__statsics-list">
                             <li className="ProfilePage__statistics-item">
                                 <h2>Followers</h2>
-                                <p>100</p>
+                                <p>{Subscribers.length}</p>
                             </li>
                             <li className="ProfilePage__statistics-item">
                                 <h2>Posts</h2>
@@ -59,7 +85,7 @@ export const ProfilePage = ({ image }: { image: string }) => {
                             </li>
                             <li className="ProfilePage__statistics-item">
                                 <h2>Follows</h2>
-                                <p>100</p>
+                                <p>{Subscriptions.length}</p>
                             </li>
                         </ul>
                     </div>

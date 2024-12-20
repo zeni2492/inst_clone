@@ -17,11 +17,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* затемнённый фон */
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 .Modal__Container {
-    position: relative; /* Относительное позиционирование */
+    position: relative;
     width: 50%;
     height: 60%;
     background: white;
@@ -29,7 +29,7 @@
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
     display: flex;
     overflow: hidden;
-    z-index: 1001; /* Установлен выше, чтобы перекрыть Overlay */
+    z-index: 1001;
 }
 
 .Modal__CommentsContainer {
@@ -38,6 +38,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
 }
 
 .Modal__Content {
@@ -46,24 +47,46 @@
     width: 100%;
 }
 
+.Modal__ImageContainer {
+    width: 100%;
+}
+
 .Modal__Image {
     height: 100%;
     width: 100%;
     object-fit: cover;
-    border-radius: 10px 0 0 10px;
 }
 
 .Modal__Social {
-    width: 60%;
+    width: 100%;
     display: flex;
     align-items: start;
     justify-content: space-between;
     box-sizing: border-box;
     flex-direction: column;
+    position: relative;
 }
 
-.Modal__Comments {
+.Modal__CommentInputContainer {
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: -12px;
+    background: #fff;
+}
+
+.Modal__CommentInput {
+    width: 100%;
+    border-radius: 0px 0px 0px 0px;
+    background: #fff;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-top: 2px solid var(--primary);
+}
+
+.Modal__CommentButton {
+    border-radius: 0px 10px 0px 0px;
     display: flex;
 }
 
@@ -101,13 +124,18 @@
 }
 
 .Modal__Actions {
-    width: 20%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 
 .Modal__ActionsContainer {
-    width: 100%;
+    width: 60%;
     display: flex;
-    justify-content: space-between;
+    gap: 100px;
+    margin-left: 20px;
+    justify-content: center;
 }
 
 .Modal__Header {
@@ -136,8 +164,9 @@
 
 .Modal__CommentsList {
     width: 100%;
-    overflow: auto;
-    height: 550px;
+    overflow-y: auto;
+    max-height: 50vh; /* Limits the height of the comment list */
+    margin-bottom: 20px;
 }
 
 .Modal__Comment {
@@ -153,6 +182,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
 }
 
 .Modal__CommentUsername {
@@ -171,6 +202,16 @@
 
 .Modal__Close {
     display: none;
+}
+
+.Modal__LikeImage {
+    width: 30px;
+}
+
+.Modal__CommentInputField {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
 }
 
 @keyframes fadeIn {
@@ -213,29 +254,81 @@
 
     .Modal__CommentsContainer {
         width: 100%;
-        justify-content: start;
-    }
-    .Modal__CommentsList {
-        height: 400px;
-        overflow: scroll;
-        width: 100%;
     }
 
-    .Modal__Header {
+    .Modal__CommentsList {
+        height: 40vh; /* Adjust height for smaller screens */
     }
 
     .Modal__Send {
         border-left: none;
     }
     .Modal__Comments {
-        position: absolute;
-        bottom: 0px;
-        background: white;
+        width: 95%; /* Adjust width for smaller screens */
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 0;
+    }
+
+    .Modal__CommentInputContainer {
+        width: 100%;
+    }
+
+    .Modal__CommentButton {
+        justify-content: center;
+        align-items: center;
+    }
+
+    .Modal__Image {
+        padding: 0 20px;
+        border-radius: 10px;
+        height: 60vh;
     }
 
     .Modal__Actions {
         position: absolute;
         bottom: 50px;
         background: white;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .Modal__Container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .Modal__Image {
+        height: 50vh;
+    }
+
+    .Modal__CommentsList {
+        height: 35vh;
+    }
+
+    .Modal__Comments {
+        width: 95%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .Modal__Username {
+        font-size: 1rem;
+    }
+
+    .Modal__UserImage {
+        width: 40px;
+        height: 40px;
+    }
+
+    .Modal__Send img {
+        width: 20px;
+    }
+}
+
+@media screen and (min-width: 2000px) {
+    .Modal__Comments {
+        padding-bottom: 120px;
+        margin: 20px;
     }
 }

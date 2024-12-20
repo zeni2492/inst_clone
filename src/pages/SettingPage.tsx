@@ -1,32 +1,52 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "../storage/userSlice";
 import { UserState } from "../App";
 
 export const SettingsPage = ({ image }: { image: string }) => {
-    const [name, setName] = useState<string>("User"); // user name state
-    const [status, setStatus] = useState<string>(""); // user status state
-    const [edit, setEdit] = useState(false); //enable edit mode
+    const [name, setName] = useState<string>("User"); // начальное значение
+    const [status, setStatus] = useState<string>(""); // начальное значение
+    const [edit, setEdit] = useState(false);
     const { username, userId } = useSelector(
         (state: { user: UserState }) => state.user
-    ); //getting data from redux
+    );
     const dispatch = useDispatch();
 
     const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        //uploading image by click on avatar
         const file = event.target.files?.[0];
         if (file) {
             changeAvatar(file);
         }
     };
 
+    const getUserInfo = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:2492/api/user/getUser?id=${userId}`
+            );
+            const data = await response.json();
+            console.log(data);
+
+            // Убедитесь, что data.name и data.status существуют
+            setName(data.name ?? "User"); // Если name отсутствует, используйте "User"
+            setStatus(data.status ?? ""); // Если status отсутствует, используйте пустую строку
+        } catch (error) {
+            console.error("Error fetching user info:", error);
+            setName("User"); // Значение по умолчанию
+            setStatus(""); // Значение по умолчанию
+        }
+    };
+
+    useEffect(() => {
+        getUserInfo();
+    }, []);
+
     const changeAvatar = async (file: File) => {
         try {
-            const formData = new FormData(); // create a FormData object
-            formData.append("image", file); // append the image file
+            const formData = new FormData();
+            formData.append("image", file);
 
             const response = await fetch(
-                // query the server to change avatar
                 `http://localhost:2492/api/profile/settings/image/${userId}`,
                 {
                     method: "POST",
@@ -37,13 +57,12 @@ export const SettingsPage = ({ image }: { image: string }) => {
             const data = await response.json();
 
             if (data?.photoUrl) {
-                // update user data in Redux
                 dispatch(
                     setUser({
                         userId,
                         username,
                         email: "",
-                        photoUrl: data.photoUrl, // update photoUrl
+                        photoUrl: data.photoUrl,
                     })
                 );
             }
@@ -69,40 +88,28 @@ export const SettingsPage = ({ image }: { image: string }) => {
                     />
                 </label>
 
-                <div>
-                    <button onClick={() => setEdit(!edit)}>
+                <form onSubmit={(e) => e.preventDefault()}>
+                    <input
+                        className="SettingsPage__Input"
+                        placeholder="Name"
+                        value={name} // значение никогда не будет undefined
+                        onChange={(e) => setName(e.target.value)}
+                        disabled={!edit}
+                    />
+                    <input
+                        className="SettingsPage__Input"
+                        placeholder="Status"
+                        value={status} // значение никогда не будет undefined
+                        onChange={(e) => setStatus(e.target.value)}
+                        disabled={!edit}
+                    />
+                    <button
+                        className="SettingsPage__Button"
+                        type="button"
+                        onClick={() => setEdit(!edit)}
+                    >
                         {edit ? "Save" : "Edit"}
                     </button>
-                </div>
-
-                <form className="SettingsPage__Form" action="">
-                    {edit ? (
-                        <div>
-                            <div className="SettingsPage__UserChangeInfo">
-                                <p>{username}</p>
-                            </div>
-                            <div>
-                                <p>{status}</p>
-                            </div>
-                        </div>
-                    ) : (
-                        <div>
-                            <div>
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
-                            <div>
-                                <input
-                                    type="text"
-                                    value={status}
-                                    onChange={(e) => setStatus(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    )}
                 </form>
             </div>
         </div>

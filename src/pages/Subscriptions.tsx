@@ -1,59 +1,44 @@
+import { getSubscriptions } from "../api/api";
+import { UserState } from "../App";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import defaultUser from "../assets/user-svgrepo-com.svg";
 import { User } from "../App";
 
-export const FindPage = () => {
-    const [users, setUsers] = useState([]);
-    const [Search, setSearch] = useState("");
-    const [searchResults, setSearchResults] = useState([]);
+export const Subscriptions = () => {
     const navigate = useNavigate();
+    const [Subscriptions, setSubsription] = useState([]);
+    const { userId } = useSelector(
+        //getting data from redux
+        (state: { user: UserState }) => state.user
+    );
 
-    //query to get all users
-    const getUsers = async () => {
-        const response = await fetch("http://localhost:2492/api/user/getAll");
-        const data = await response.json();
-        setUsers(data);
-        console.log(data);
+    const subscriptions = async () => {
+        const response = await getSubscriptions(userId);
+        const data = response.subscriptions;
+        if (!data) {
+            return;
+        }
+        setSubsription(data);
     };
 
     function redirect(id: number) {
         navigate(`/profile/${id}`);
     }
 
-    useEffect(() => {
-        if (Search === "") {
-            setSearchResults(users); // if search is empty, show all users
-        } else {
-            const results = users.filter(
-                (
-                    user: User // filter users by nickname
-                ) => user.username.toLowerCase().includes(Search.toLowerCase())
-            );
-            setSearchResults(results);
-        }
-    }, [Search, users]);
+    console.log("Subscribers", Subscriptions);
 
     useEffect(() => {
-        getUsers();
+        subscriptions();
     }, []);
+
     return (
-        <div className="FindPage">
-            <div className="FindPage__Container">
-                {/* Поле ввода для поиска */}
-                <div className="FindPage__Search">
-                    <input
-                        placeholder="Search"
-                        className="FindPage__input"
-                        type="text"
-                        value={Search}
-                        onChange={(e) => setSearch(e.target.value)} // Обновляем значение поиска
-                    />
-                </div>
+        <div className="Subscribers">
+            <div className="Subscribers__Container">
                 <div className="FindPage__Users">
                     {/* Список пользователей */}
-                    {searchResults.length > 0 ? (
-                        searchResults.map((user: User) => (
+                    {Subscriptions.length > 0 ? (
+                        Subscriptions.map((user: User) => (
                             <div
                                 onClick={() => redirect(user.id)}
                                 className="FindPage__User"
@@ -65,7 +50,7 @@ export const FindPage = () => {
                                         src={
                                             user.photo_url !== null
                                                 ? `http://localhost:2492${user.photo_url}`
-                                                : defaultUser
+                                                : ""
                                         }
                                         alt="User Avatar"
                                     />

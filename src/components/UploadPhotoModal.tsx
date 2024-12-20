@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router";
 import { useSelector } from "react-redux";
+import { UserState } from "../App";
 
 interface ModalProps {
     onClose: () => void;
@@ -8,25 +8,18 @@ interface ModalProps {
 }
 
 export const UploadPhotoModal = ({ isOpen, onClose }: ModalProps) => {
-    const { userId } = useSelector((state: any) => state.user);
+    const { userId } = useSelector((state: UserState) => state.user);
     const [file, setFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [dragging, setDragging] = useState(false);
     const [description, setDescription] = useState("");
 
-    // Выводим файл в консоль при изменении
-    useEffect(() => {
-        console.log(file);
-    }, [file]);
-
-    // Закрытие модального окна при клике за его пределами
     const closeModal = (e: React.MouseEvent) => {
         if (e.target === e.currentTarget) {
             onClose();
         }
     };
 
-    // Обработчики для перетаскивания
     const handleDragOver = (e: React.DragEvent) => {
         e.preventDefault();
         setDragging(true);
@@ -41,20 +34,18 @@ export const UploadPhotoModal = ({ isOpen, onClose }: ModalProps) => {
         setDragging(false);
         const droppedFiles = e.dataTransfer.files;
         if (droppedFiles.length > 0) {
-            const newFile = droppedFiles[0]; // Загружаем только один файл
+            const newFile = droppedFiles[0];
             setFile(newFile);
         }
     };
 
-    // Обработчик для выбора файла через стандартное окно файлов
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files?.[0]; // Загружаем только первый файл
+        const selectedFile = e.target.files?.[0];
         if (selectedFile) {
             setFile(selectedFile);
         }
     };
 
-    // Преобразуем файл в URL для предпросмотра
     useEffect(() => {
         if (file) {
             const fileUrl = URL.createObjectURL(file);
@@ -70,14 +61,10 @@ export const UploadPhotoModal = ({ isOpen, onClose }: ModalProps) => {
         formData.append("description", description);
         formData.append("user_id", userId);
         try {
-            const response = await fetch(
-                "http://localhost:2492/api/photo/upload",
-                {
-                    method: "POST",
-                    body: formData,
-                }
-            );
-            const data = await response.json();
+            await fetch("http://localhost:2492/api/photo/upload", {
+                method: "POST",
+                body: formData,
+            });
         } catch (e) {
             console.log(e);
         }

@@ -1,18 +1,68 @@
 import { Link, useNavigate } from "react-router-dom";
-
+import { useEffect, useState } from "react";
 import UserDefault from "../assets/user-svgrepo-com.svg";
 import magnifier from "../assets/navIcons/magnifier-svgrepo-com.svg";
 import feed from "../assets/navIcons/feed.svg";
 import gear from "../assets/navIcons/gear-svgrepo-com.svg";
 import { useSelector } from "react-redux";
 import { UserState } from "../App";
+import { photo } from "../App";
+import { getSubscribers } from "../api/api";
+import { getSubscriptions } from "../api/api";
 
 export const NavBar = ({ image }: { image: string }) => {
     const navigate = useNavigate();
+    const [Subscribers, setSubscribers] = useState([]);
+    const [Subscriptions, setSubsription] = useState([]);
+
     const { username, userId } = useSelector(
         //getting data from redux
         (state: { user: UserState }) => state.user
     );
+
+    const [PhotoList, setPhotoList] = useState<photo[]>([]);
+
+    const getImages = async () => {
+        const response = await fetch(
+            `http://localhost:2492/api/photo/getAllUserPhotos/${userId}`, //query to get images
+            {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const data = await response.json();
+        setPhotoList(data);
+    };
+
+    const subscriptions = async () => {
+        const response = await getSubscriptions(userId);
+        const data = response.subscriptions;
+        if (!data) {
+            return;
+        }
+        setSubsription(data);
+    };
+
+    const subscribers = async () => {
+        const response = await getSubscribers(
+            "http://localhost:2492/api/social/getSubscribers",
+            userId
+        );
+        const data = response.subscribers;
+        if (!data) {
+            return;
+        }
+        setSubscribers(data);
+    };
+
+    useEffect(() => {
+        getImages();
+        // subscribers();
+        subscribers();
+        subscriptions();
+    }, []);
 
     return (
         <aside className="NavBar__Container">
@@ -30,15 +80,21 @@ export const NavBar = ({ image }: { image: string }) => {
                     <div className="Profile">
                         <div className="Profile__Info">
                             <div className="Profile__media Profile__Posts">
-                                <p>20</p>
+                                <p>{PhotoList.length}</p>
                                 <h3>Posts</h3>
                             </div>
-                            <div className="Profile__media Profile__Likes">
-                                <p>100</p>
+                            <div
+                                className="Profile__media Profile__Likes"
+                                onClick={() => navigate("/subscribers")}
+                            >
+                                <p>{Subscribers.length}</p>
                                 <h3>Followers</h3>
                             </div>
-                            <div className="Profile__media Profile__Following">
-                                <p>100</p>
+                            <div
+                                className="Profile__media Profile__Following"
+                                onClick={() => navigate("/subscriptions")}
+                            >
+                                <p>{Subscriptions.length}</p>
                                 <h3>Follows</h3>
                             </div>
                         </div>

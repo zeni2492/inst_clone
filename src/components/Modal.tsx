@@ -1,12 +1,10 @@
 import { photo, UserState } from "../App";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Sendimage from "../assets/social/send-svgrepo-com.svg";
+import { useNavigate } from "react-router-dom";
 import filledHeart from "../assets/PostActions/filledHearth.svg";
 import emptyHeart from "../assets/PostActions/emptyHearth.svg";
-import share from "../assets/PostActions/share.svg";
 import Arrow from "../assets/PostActions/back-arrow-svgrepo-com.svg";
-import userDefault from "../assets/user-svgrepo-com.svg";
 
 interface Comment {
     id: number;
@@ -28,6 +26,7 @@ export const Modal = ({ isOpen, image, onClose }: ModalProps) => {
     const [userData, setUserData] = useState<UserState | null>(null);
     const [comment, setComment] = useState<string>("");
     const [commentList, setCommentList] = useState<Comment[]>([]);
+    const navigate = useNavigate();
 
     const user = useSelector((state: any) => state.user);
 
@@ -47,7 +46,7 @@ export const Modal = ({ isOpen, image, onClose }: ModalProps) => {
             if (response.ok) {
                 // Проверяем наличие photo_url и устанавливаем дефолтное изображение, если оно отсутствует
                 if (!data.photo_url || data.photo_url === "") {
-                    data.photo_url = userDefault;
+                    data.photo_url = "/uploads/user-svgrepo-com.svg";
                 }
                 setUserData(data);
             } else {
@@ -102,7 +101,7 @@ export const Modal = ({ isOpen, image, onClose }: ModalProps) => {
         if (image.id) {
             getComments();
         }
-    }, [image]);
+    }, []);
 
     function likePhoto(id: number) {
         setLikes((prevLikes) => ({
@@ -115,8 +114,14 @@ export const Modal = ({ isOpen, image, onClose }: ModalProps) => {
 
     // Проверка и установка дефолтного изображения для photo_url
     if (!image.photo_url) {
-        image.photo_url = userDefault;
+        image.photo_url = "/public/user-svgrepo-com.svg";
     }
+
+    const navigatetoCommetWriter = (id: number) => {
+        console.log("id", id);
+        navigate(`/profile/${id}`);
+        onClose();
+    };
 
     return (
         <main className="Modal" onClick={onClose}>
@@ -145,7 +150,7 @@ export const Modal = ({ isOpen, image, onClose }: ModalProps) => {
                                         src={
                                             userData.photo_url
                                                 ? `http://localhost:2492${userData.photo_url}`
-                                                : userDefault
+                                                : `http://localhost:2492/uploads/user-svgrepo-com.svg`
                                         }
                                         alt={userData.username}
                                     />
@@ -159,14 +164,21 @@ export const Modal = ({ isOpen, image, onClose }: ModalProps) => {
                             <div className="Modal__CommentsList">
                                 {commentList.map((comment, index) => (
                                     <div key={`${comment.id}-${index}`}>
-                                        <div className="Modal__Comment">
+                                        <div
+                                            onClick={() =>
+                                                navigatetoCommetWriter(
+                                                    comment.user_id
+                                                )
+                                            }
+                                            className="Modal__Comment"
+                                        >
                                             <img
                                                 className="Modal__CommentImage"
                                                 // Проверяем если photo_url комментария существует
                                                 src={
                                                     comment.photo_url
                                                         ? `http://localhost:2492${comment.photo_url}`
-                                                        : userDefault
+                                                        : "http://localhost:2492/uploads/user-svgrepo-com.svg"
                                                 }
                                                 alt=""
                                             />
@@ -188,49 +200,36 @@ export const Modal = ({ isOpen, image, onClose }: ModalProps) => {
                                     </div>
                                 ))}
                             </div>
-                            <div className="Modal__Actions">
-                                <div className="Modal__ActionsContainer">
-                                    <div
-                                        onClick={() => likePhoto(image.id)}
-                                        className="PostActions"
-                                    >
-                                        <img
-                                            src={
-                                                likes[image.id]
-                                                    ? filledHeart
-                                                    : emptyHeart
-                                            }
-                                        />
-                                    </div>
-                                    <div className="PostActions">
-                                        <img src={share} alt="" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="Modal__Comments">
-                                <input
-                                    placeholder="Comment"
-                                    id="Modal__Input"
-                                    className="Modal__Input"
-                                    type="text"
-                                    value={comment}
-                                    onChange={(e) => setComment(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === "Enter") {
-                                            sendComment();
-                                        }
-                                    }}
-                                />
-                                <button
-                                    className="Modal__Send"
-                                    onClick={sendComment}
-                                >
+                            <div className="Modal__CommentInputContainer">
+                                <div className="Modal__Likes">
                                     <img
-                                        className="Modal__SendImage"
-                                        src={Sendimage}
-                                        alt="Send"
+                                        onClick={() => likePhoto(image.id)}
+                                        className="Modal__LikeImage"
+                                        src={
+                                            likes[image.id]
+                                                ? emptyHeart
+                                                : filledHeart
+                                        }
+                                        alt=""
                                     />
-                                </button>
+                                </div>
+                                <div className="Modal__CommentInputField">
+                                    <input
+                                        className="Modal__CommentInput"
+                                        type="text"
+                                        placeholder="Write a comment..."
+                                        value={comment}
+                                        onChange={(e) =>
+                                            setComment(e.target.value)
+                                        }
+                                    />
+                                    <button
+                                        className="Modal__CommentButton"
+                                        onClick={sendComment}
+                                    >
+                                        Send
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

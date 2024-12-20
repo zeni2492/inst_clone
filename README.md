@@ -1,4 +1,4 @@
-In this instagram clone tou have 6 pages
+In this instagram clone you have 6 pages
 
 <<<<<<< HEAD
 Here you must register or login if you have account
@@ -17,7 +17,7 @@ http://localhost:3000/profile/:id
 this route is for your personal page
 http://localhost:3000/profile/{userId}
 =======
-Here you must register or login if you have account 
+Here you must register or login if you have account
 to register you need to insert pass with more then 6 letters
 http://localhost:3000/AuthPage
 
@@ -28,11 +28,12 @@ Page to find users
 http://localhost:3000/FindPage
 
 this route is for other users account to watch
-http://localhost:3000/profile/:id 
+http://localhost:3000/profile/:id
 
 this route is for your personal page
-http://localhost:3000/profile/{userId} 
->>>>>>> refs/remotes/origin/main
+http://localhost:3000/profile/{userId}
+
+> > > > > > > refs/remotes/origin/main
 
 this page in progress too but i added a function to switch profile images
 http://localhost:3000/settingPage
@@ -50,7 +51,7 @@ add the ability to put likes on post and show the numbers of likes
 =======
 
 TODOLIST:
-Add a upload function from client to server
 add the ability to subscribe on other people and writing commentaries
-add the ability to put likes on post and show the numbers of likes  
->>>>>>> refs/remotes/origin/main
+add the ability to put likes on post and show the numbers of likes
+
+> > > > > > > refs/remotes/origin/main

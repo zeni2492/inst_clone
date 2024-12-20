@@ -23,3 +23,9 @@
     object-fit: cover;
     cursor: pointer;
 }
+
+@media screen and (max-width: 780px) {
+    .SettingsPage__Container {
+        width: 100%;
+    }
+}

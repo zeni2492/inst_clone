@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { photo } from "../App";
 import { Modal } from "./Modal";
 

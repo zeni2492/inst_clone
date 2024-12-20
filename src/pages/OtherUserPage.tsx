@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ImagesComponent } from "../components/ProfileImagesComponent";
+import { useSelector } from "react-redux";
 import DefaulUser from "../assets/user-svgrepo-com.svg";
+import { subscriberType, UserState } from "../App";
+import { getSubscribers } from "../api/api";
+import { getSubscriptions } from "../api/api";
 
 type User = {
     username: string;
@@ -11,14 +15,20 @@ type User = {
 };
 
 export const OtherProfilePage = () => {
-    const { id } = useParams(); // Достаем параметр id из URL
-    const [user, setUser] = useState<null | User>(null); // Состояние для хранения информации о пользователе
-    const [loading, setLoading] = useState(true); // Состояние для отображения спиннера
+    const { id } = useParams<{ id: string }>(); // Достаем параметр id из URL
+    const [user, setUser] = useState<null | User>(null);
+    const [loading, setLoading] = useState(true);
     const [Photos, setPhotos] = useState([]);
-    const [follow, setFollow] = useState(false); //follow state
+    const [follow, setFollow] = useState(false);
+    const [Subscribers, setSubscribers] = useState([]);
+    const [Subscriptions, setSubsription] = useState([]);
+
+    const State = useSelector((state: { user: UserState }) => state.user);
 
     function Follow() {
         setFollow(!follow);
+        if (!follow) subscribe();
+        else unsubscribe();
     }
 
     const fetchUser = async () => {
@@ -28,7 +38,6 @@ export const OtherProfilePage = () => {
             );
             const data = await response.json();
             setUser(data);
-
             setLoading(false);
         } catch (error) {
             console.error("Ошибка при загрузке данных пользователя:", error);
@@ -48,15 +57,93 @@ export const OtherProfilePage = () => {
         }
     };
 
+    const subscribe = async () => {
+        try {
+            const response = await fetch(
+                `http://localhost:2492/api/social/subscribe/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        user_id: State.userId,
+                    }),
+                }
+            );
+            const data = await response.json();
+
+            console.log(data);
+        } catch (error) {
+            console.error("Error subscribing:", error);
+        }
+    };
+
+    const unsubscribe = async () => {
+        if (!State.userId) {
+            console.error("User ID is missing in userState");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `http://localhost:2492/api/social/unsubscribe/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        user_id: State.userId,
+                    }),
+                }
+            );
+            const data = await response.json();
+            console.log(data);
+        } catch (error) {
+            console.error("Error unsubscribing:", error);
+        }
+    };
+
+    const fetchSubscribers = async () => {
+        const data = await getSubscribers(
+            "http://localhost:2492/api/social/getSubscribers",
+            id
+        );
+        const response: subscriberType = data.subscribers;
+        if (!response) {
+            return;
+        }
+        setSubscribers(response);
+    };
+
+    const subscriptions = async () => {
+        const response = await getSubscriptions(id);
+        const data = response.subscriptions;
+        if (!data) {
+            return;
+        }
+        setSubsription(data);
+    };
+
     useEffect(() => {
         if (id) fetchUser();
         fetchPhotos();
+        fetchSubscribers();
+        subscriptions();
     }, [id]);
 
-    if (loading) return <div>Загрузка...</div>; // Показываем спиннер при загрузке
+    useEffect(() => {
+        for (let i = 0; i < Subscribers.length; i++) {
+            if (Subscribers[i].subscriber_id === State.userId) {
+                setFollow(true);
+            }
+        }
+    }, [Subscribers]);
 
-    if (!user) return <div>Пользователь не найден</div>; // Если пользователь не найден, выводим сообщение
+    if (loading) return <div>Загрузка...</div>;
 
+    if (!user) return <div>Пользователь не найден</div>;
     return (
         <main className="ProfilePage__container">
             <div className="ProfilePage">
@@ -86,7 +173,7 @@ export const OtherProfilePage = () => {
                         <ul className="ProfilePage__statsics-list">
                             <li className="ProfilePage__statistics-item">
                                 <h2>Followers</h2>
-                                <p>100</p>
+                                <p>{Subscribers.length}</p>
                             </li>
                             <li className="ProfilePage__statistics-item">
                                 <h2>Posts</h2>
@@ -94,7 +181,7 @@ export const OtherProfilePage = () => {
                             </li>
                             <li className="ProfilePage__statistics-item">
                                 <h2>Follows</h2>
-                                <p>100</p>
+                                <p>{Subscriptions.length}</p>
                             </li>
                         </ul>
                     </div>

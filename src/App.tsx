@@ -7,6 +7,8 @@ import { FindPage } from "./pages/FindPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { SettingsPage } from "./pages/SettingPage";
 import { AuthPage } from "./pages/AuthPage";
+import { Subscribers } from "./pages/Subscribers";
+import { Subscriptions } from "./pages/Subscriptions";
 //components
 import { HeaderComponent } from "./components/HeaderComponent";
 import { NavBar } from "./components/NavBar";
@@ -16,11 +18,11 @@ import DefaltUser from "./assets/user-svgrepo-com.svg";
 import { OtherProfilePage } from "./pages/OtherUserPage";
 
 export type UserState = {
+    id: number;
     userId: number;
     username: string;
     email: string;
     photoUrl?: string;
-    photo_url?: string;
 };
 
 export type photo = {
@@ -28,6 +30,20 @@ export type photo = {
     user_id: number;
     photo_url: string;
     description: string;
+};
+
+export type User = {
+    id: number;
+    username: string;
+    email: string;
+    photo_url: string;
+};
+
+export type subscriberType = {
+    created_at: string;
+    id: number;
+    subscribed_to_id: number;
+    subscriber_id: number;
 };
 
 function App() {
@@ -66,6 +82,8 @@ function App() {
                         element={<SettingsPage image={image} />}
                     />
                     <Route path="/auth" element={<AuthPage />} />
+                    <Route path="/subscribers" element={<Subscribers />} />
+                    <Route path="/subscriptions" element={<Subscriptions />} />
                 </Routes>
             </div>
             <div className="PhoneNavComponent__Container">
