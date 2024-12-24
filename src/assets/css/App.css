@@ -209,10 +209,6 @@
     border: 1px solid var(--primary);
 }
 
-.MainPage {
-    height: 2000px;
-}
-
 .PhoneNavComponent__Container {
     position: fixed;
     bottom: 0;

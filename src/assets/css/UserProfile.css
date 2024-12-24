@@ -39,24 +39,6 @@
     width: 100%;
 }
 
-.ProfilePage__Images {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-
-.ProfilePage__Photos {
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-row-gap: 32px;
-    grid-column-gap: 32px;
-    place-items: center;
-    margin-top: 56px;
-}
-
 .ProfilePage__statistics {
     width: 100%;
     display: flex;
@@ -158,51 +140,34 @@
     padding-bottom: 12px;
 }
 
-@media screen and (max-width: 1024px) {
-    .ProfilePage__Photos {
-        grid-template-columns: repeat(2, 1fr);
-    }
+.MainPage__Container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ProfilePage__images-container {
+    width: 80%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 0px 50px;
+}
+
+.ProfilePage__Images {
+    width: 100%;
+    display: grid;
+    gap: 40px;
+    margin-bottom: 60px;
+    padding: 0px 50px;
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
 }
 
 @media screen and (max-width: 780px) {
-    .ProfilePage__container {
-        align-items: center;
-    }
-    .ProfilePage__Photos {
-        gap: 0;
-        grid-template-columns: repeat(3, 1fr);
+    .ProfilePage {
         width: 100%;
-        row-gap: 12px;
-    }
-    .ProfilePage__Photo {
-        width: 100%;
-        height: 100%;
-        margin-top: -12px;
-    }
-    .ProfilePage__PhotoContainer {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-    }
-}
-
-@media screen and (max-width: 460px) {
-    .ProfilePage__container {
-        align-items: center;
-    }
-    .ProfilePage__Photos {
-        gap: 0;
-        grid-template-columns: repeat(3, 1fr);
-    }
-    .ProfilePage__Photo {
-        width: 100%;
-        height: 100%;
-        margin-top: -12px;
-    }
-    .ProfilePage__PhotoContainer {
-        margin: 0;
-        padding: 0;
-        width: 110px;
-        height: 100%;
+        margin-bottom: 60px;
     }
 }

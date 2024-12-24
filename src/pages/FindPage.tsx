@@ -14,7 +14,6 @@ export const FindPage = () => {
         const response = await fetch("http://localhost:2492/api/user/getAll");
         const data = await response.json();
         setUsers(data);
-        console.log(data);
     };
 
     function redirect(id: number) {

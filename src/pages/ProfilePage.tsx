@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { photo, UserState } from "../App";
 import { ImagesComponent } from "../components/ProfileImagesComponent";
 import { UploadPhotoModal } from "../components/UploadPhotoModal";
-import { getSubscribers, getSubscriptions } from "../api/api";
+import { getSocialStats } from "../api/api";
 import { subscriberType } from "../App";
 import DefaultUser from "../assets/user-svgrepo-com.svg";
 
@@ -30,7 +30,7 @@ export const ProfilePage = ({ image }: { image: string }) => {
     };
 
     const subscribers = async () => {
-        const response = await getSubscribers(
+        const response = await getSocialStats(
             "http://localhost:2492/api/social/getSubscribers",
             userId
         );
@@ -42,7 +42,10 @@ export const ProfilePage = ({ image }: { image: string }) => {
     };
 
     const subscriptions = async () => {
-        const response = await getSubscriptions(userId);
+        const response = await getSocialStats(
+            `http://localhost:2492/api/social/getSubscriptions`,
+            userId
+        );
         const data = response.subscriptions;
         if (!data) {
             return;
@@ -72,7 +75,6 @@ export const ProfilePage = ({ image }: { image: string }) => {
                     <div className="ProfilePage__username">
                         <h2>{username || "User"}</h2>
                     </div>
-                    <div></div>
                     <div className="ProfilePage__statistics">
                         <ul className="ProfilePage__statsics-list">
                             <li className="ProfilePage__statistics-item">
@@ -99,10 +101,19 @@ export const ProfilePage = ({ image }: { image: string }) => {
                             New Post
                         </button>
                     </nav>
-
-                    <div className="ProfilePage__Images">
-                        <ImagesComponent image={PhotoList} />
-                    </div>
+                </div>
+                <div className="MainPage__Container__Images">
+                    {PhotoList.map((image) => (
+                        <div className="MainPage__Images" key={image.id}>
+                            <div className="MainPage__Images_User__Container">
+                                <div className="MainPage__Images_User"></div>
+                            </div>
+                            <ImagesComponent image={image} />
+                            <p className="MainPage__Images_Description">
+                                {image.description}
+                            </p>
+                        </div>
+                    ))}
                 </div>
             </div>
             <UploadPhotoModal

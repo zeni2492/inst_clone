@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import facebook from "../assets/social/fb.svg";
-import google from "../assets/social/google.svg";
+import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setUser } from "../storage/userSlice";
-import { useNavigate } from "react-router";
+
+import facebook from "../assets/social/fb.svg";
+import google from "../assets/social/google.svg";
 
 export const AuthPage = () => {
     const [isLogging, setIsLogging] = useState(false);

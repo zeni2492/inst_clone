@@ -115,14 +115,60 @@ class SocialController {
         }
     }
 
-    // Лайк
     async Like(req, res) {
-        res.send("Like");
+        const { photo_id, user_id } = req.body;
+        try {
+            const data = await pool.query(
+                `INSERT INTO likes (user_id, photo_id) VALUES ($1, $2) RETURNING *`,
+                [user_id, photo_id]
+            );
+            res.status(201).json({
+                message: "Successfully liked",
+                like: data.rows[0],
+            });
+        } catch (error) {
+            console.error("Error in Like:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
     }
 
-    // Удаление лайка
     async Unlike(req, res) {
-        res.send("Unlike");
+        const { photo_id, user_id } = req.body;
+        try {
+            const data = await pool.query(
+                `DELETE FROM likes WHERE user_id = $1 AND photo_id = $2 RETURNING *`,
+                [user_id, photo_id]
+            );
+            res.status(200).json({
+                message: "Successfully unliked",
+                like: data.rows[0],
+            });
+        } catch (error) {
+            console.error("Error in Unlike:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    }
+
+    async getLikes(req, res) {
+        const { id: photo_id } = req.params;
+        try {
+            const data = await pool.query(
+                `SELECT 
+                    likes.*, 
+                    users.id AS user_id, 
+                    users.username, 
+                    users.email, 
+                    users.photo_url 
+                 FROM likes 
+                 JOIN users ON likes.user_id = users.id 
+                 WHERE likes.photo_id = $1`,
+                [photo_id]
+            );
+            res.status(200).json({ likes: data.rows });
+        } catch (error) {
+            console.error("Error in getLikes:", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
     }
 }
 

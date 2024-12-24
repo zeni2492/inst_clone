@@ -1,14 +1,16 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+
+import { getSocialStats } from "../api/api";
+
+import { UserState } from "../App";
+import { photo } from "../App";
+
 import UserDefault from "../assets/user-svgrepo-com.svg";
 import magnifier from "../assets/navIcons/magnifier-svgrepo-com.svg";
 import feed from "../assets/navIcons/feed.svg";
 import gear from "../assets/navIcons/gear-svgrepo-com.svg";
-import { useSelector } from "react-redux";
-import { UserState } from "../App";
-import { photo } from "../App";
-import { getSubscribers } from "../api/api";
-import { getSubscriptions } from "../api/api";
 
 export const NavBar = ({ image }: { image: string }) => {
     const navigate = useNavigate();
@@ -37,7 +39,10 @@ export const NavBar = ({ image }: { image: string }) => {
     };
 
     const subscriptions = async () => {
-        const response = await getSubscriptions(userId);
+        const response = await getSocialStats(
+            `http://localhost:2492/api/social/getSubscriptions`,
+            userId
+        );
         const data = response.subscriptions;
         if (!data) {
             return;
@@ -46,7 +51,7 @@ export const NavBar = ({ image }: { image: string }) => {
     };
 
     const subscribers = async () => {
-        const response = await getSubscribers(
+        const response = await getSocialStats(
             "http://localhost:2492/api/social/getSubscribers",
             userId
         );
@@ -59,7 +64,6 @@ export const NavBar = ({ image }: { image: string }) => {
 
     useEffect(() => {
         getImages();
-        // subscribers();
         subscribers();
         subscriptions();
     }, []);

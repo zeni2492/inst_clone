@@ -167,6 +167,7 @@
     overflow-y: auto;
     max-height: 50vh; /* Limits the height of the comment list */
     margin-bottom: 20px;
+    padding-bottom: 60px;
 }
 
 .Modal__Comment {

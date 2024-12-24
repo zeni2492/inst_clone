@@ -81,6 +81,9 @@
     height: 40px;
     background-color: var(--primary);
     border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 5px;
     color: white;
 }

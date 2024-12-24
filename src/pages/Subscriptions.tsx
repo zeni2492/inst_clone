@@ -1,9 +1,9 @@
-import { getSubscriptions } from "../api/api";
-import { UserState } from "../App";
-import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { User } from "../App";
+
+import { getSocialStats } from "../api/api";
+import { UserState, User } from "../App";
 
 export const Subscriptions = () => {
     const navigate = useNavigate();
@@ -13,8 +13,12 @@ export const Subscriptions = () => {
         (state: { user: UserState }) => state.user
     );
 
+    // fetching info about your subscribers with function from api/api
     const subscriptions = async () => {
-        const response = await getSubscriptions(userId);
+        const response = await getSocialStats(
+            "http://localhost:2492/api/social/getSubscriptions",
+            userId
+        );
         const data = response.subscriptions;
         if (!data) {
             return;
@@ -22,11 +26,10 @@ export const Subscriptions = () => {
         setSubsription(data);
     };
 
+    // using hook for redirect
     function redirect(id: number) {
         navigate(`/profile/${id}`);
     }
-
-    console.log("Subscribers", Subscriptions);
 
     useEffect(() => {
         subscriptions();
@@ -40,7 +43,7 @@ export const Subscriptions = () => {
                     {Subscriptions.length > 0 ? (
                         Subscriptions.map((user: User) => (
                             <div
-                                onClick={() => redirect(user.id)}
+                                onClick={() => redirect(user.user_id)}
                                 className="FindPage__User"
                                 key={user.id}
                             >
@@ -50,7 +53,7 @@ export const Subscriptions = () => {
                                         src={
                                             user.photo_url !== null
                                                 ? `http://localhost:2492${user.photo_url}`
-                                                : ""
+                                                : "http://localhost:2492/uploads/user-svgrepo-com.svg"
                                         }
                                         alt="User Avatar"
                                     />

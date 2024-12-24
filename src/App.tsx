@@ -22,6 +22,7 @@ export type UserState = {
     userId: number;
     username: string;
     email: string;
+    photo_url: string;
     photoUrl?: string;
 };
 
@@ -30,10 +31,13 @@ export type photo = {
     user_id: number;
     photo_url: string;
     description: string;
+    username: string;
+    user_photo: string;
 };
 
 export type User = {
     id: number;
+    user_id: number;
     username: string;
     email: string;
     photo_url: string;

@@ -25,7 +25,6 @@ export const SettingsPage = ({ image }: { image: string }) => {
                 `http://localhost:2492/api/user/getUser?id=${userId}`
             );
             const data = await response.json();
-            console.log(data);
 
             // Убедитесь, что data.name и data.status существуют
             setName(data.name ?? "User"); // Если name отсутствует, используйте "User"

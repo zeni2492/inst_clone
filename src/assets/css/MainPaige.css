@@ -1,0 +1,116 @@
+.MainPage {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+}
+
+.MainPage__Container {
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.MainPage__Container__Images {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+    padding: 0px 50px;
+}
+
+.MainPage__Images_User__Container {
+    width: 100%;
+    margin-left: 24px;
+}
+
+.MainPage__Images_User {
+    display: flex;
+    align-items: center;
+    margin: 12px 0px;
+    font-size: 0.8rem;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+}
+
+.MainPage__Images {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 12px;
+    border-radius: 12px;
+
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ProfilePage__Photos {
+    border-radius: 12px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.ProfilePage__PhotoContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.ProfilePage__Container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.ProfilePage__Photo {
+    width: 80%;
+    border-radius: 12px;
+}
+
+.MainPage__Images_Description {
+    font-size: 1.2rem;
+    margin: 0px 24px;
+}
+
+@media screen and (max-width: 1124px) {
+    .MainPage__Container__Images {
+        padding: 0;
+        margin-right: 36px;
+        gap: 12px;
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .MainPage__Container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    .MainPage__Container__Images {
+        margin: 0;
+        padding: 0 12px;
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .MainPage__Container__Images {
+        width: 100%;
+        grid-template-columns: 1fr;
+    }
+}

@@ -6,7 +6,7 @@ const PhotoController = require("../controller/PhotoController");
 
 route.post("/upload", PhotoController.upload);
 route.get("/getOne/:id", PhotoController.getPhoto);
-route.get("/getAll", PhotoController.getAll);
+route.get("/getSubscribedPhotos/:id", PhotoController.getSubscribedPhotos);
 route.get("/getAllUserPhotos/:user_id", PhotoController.getAllUserPhotos);
 
 route.post("/comment", PhotoController.UploadComment);

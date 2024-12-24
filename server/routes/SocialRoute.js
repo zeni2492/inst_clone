@@ -5,11 +5,12 @@ const router = new Router();
 
 const SocialController = require("../controller/SocialController");
 
-router.post("/setLike", SocialController.Like);
-router.post("/unsetLike", SocialController.Unlike);
+router.post("/setLike/:id", SocialController.Like);
+router.post("/unsetLike/:id", SocialController.Unlike);
 router.post("/subscribe/:id", SocialController.Subscribe);
 router.post("/unsubscribe/:id", SocialController.Unsubscribe);
 
+router.get("/getLikes/:id", SocialController.getLikes);
 router.get("/getSubscribers/:id", SocialController.getSubscribers);
 router.get("/getSubscriptions/:id", SocialController.getSubscriptions);
 

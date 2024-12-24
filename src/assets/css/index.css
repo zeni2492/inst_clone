@@ -5,6 +5,7 @@
 @import url("./Explore.css");
 @import url("./Modal.css");
 @import url("./UploadFileModal.css");
+@import url("MainPaige.css");
 
 :root {
     --primary: #a974ff;

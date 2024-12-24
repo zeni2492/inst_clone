@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { ImagesComponent } from "../components/ProfileImagesComponent";
 import { useSelector } from "react-redux";
 import DefaulUser from "../assets/user-svgrepo-com.svg";
-import { subscriberType, UserState } from "../App";
-import { getSubscribers } from "../api/api";
-import { getSubscriptions } from "../api/api";
+import { photo, subscriberType, UserState } from "../App";
+import { getSocialStats } from "../api/api";
 
 type User = {
     username: string;
@@ -15,26 +14,29 @@ type User = {
 };
 
 export const OtherProfilePage = () => {
-    const { id } = useParams<{ id: string }>(); // Достаем параметр id из URL
+    const { id } = useParams<string>();
+    const numericId = id ? Number(id) : null; // Преобразуем id в число, если оно определено
+
     const [user, setUser] = useState<null | User>(null);
     const [loading, setLoading] = useState(true);
-    const [Photos, setPhotos] = useState([]);
+    const [Photos, setPhotos] = useState<photo[]>([]);
     const [follow, setFollow] = useState(false);
-    const [Subscribers, setSubscribers] = useState([]);
-    const [Subscriptions, setSubsription] = useState([]);
+    const [Subscribers, setSubscribers] = useState<subscriberType[]>([]);
+    const [Subscriptions, setSubsription] = useState<subscriberType[]>([]);
 
     const State = useSelector((state: { user: UserState }) => state.user);
 
-    function Follow() {
-        setFollow(!follow);
+    const Follow = () => {
+        setFollow((prev) => !prev);
         if (!follow) subscribe();
         else unsubscribe();
-    }
+    };
 
-    const fetchUser = async () => {
+    const fetchUser = useCallback(async () => {
+        if (!numericId) return; // Проверяем, что id преобразован
         try {
             const response = await fetch(
-                `http://localhost:2492/api/user/getUser?id=${id}`
+                `http://localhost:2492/api/user/getUser?id=${numericId}`
             );
             const data = await response.json();
             setUser(data);
@@ -43,24 +45,26 @@ export const OtherProfilePage = () => {
             console.error("Ошибка при загрузке данных пользователя:", error);
             setLoading(false);
         }
-    };
+    }, [numericId]);
 
-    const fetchPhotos = async () => {
+    const fetchPhotos = useCallback(async () => {
+        if (!numericId) return;
         try {
             const response = await fetch(
-                `http://localhost:2492/api/photo/getAllUserPhotos/${id}`
+                `http://localhost:2492/api/photo/getAllUserPhotos/${numericId}`
             );
             const data = await response.json();
             setPhotos(data);
         } catch (error) {
             console.error("Error fetching photos:", error);
         }
-    };
+    }, [numericId]);
 
     const subscribe = async () => {
+        if (!numericId) return;
         try {
             const response = await fetch(
-                `http://localhost:2492/api/social/subscribe/${id}`,
+                `http://localhost:2492/api/social/subscribe/${numericId}`,
                 {
                     method: "POST",
                     headers: {
@@ -71,23 +75,18 @@ export const OtherProfilePage = () => {
                     }),
                 }
             );
-            const data = await response.json();
-
-            console.log(data);
+            await response.json();
+            await fetchSubscribers();
         } catch (error) {
             console.error("Error subscribing:", error);
         }
     };
 
     const unsubscribe = async () => {
-        if (!State.userId) {
-            console.error("User ID is missing in userState");
-            return;
-        }
-
+        if (!numericId) return;
         try {
             const response = await fetch(
-                `http://localhost:2492/api/social/unsubscribe/${id}`,
+                `http://localhost:2492/api/social/unsubscribe/${numericId}`,
                 {
                     method: "POST",
                     headers: {
@@ -98,52 +97,60 @@ export const OtherProfilePage = () => {
                     }),
                 }
             );
-            const data = await response.json();
-            console.log(data);
+            await response.json();
+            await fetchSubscribers();
         } catch (error) {
             console.error("Error unsubscribing:", error);
         }
     };
 
-    const fetchSubscribers = async () => {
-        const data = await getSubscribers(
+    const fetchSubscribers = useCallback(async () => {
+        if (!numericId) return;
+        const data = await getSocialStats(
             "http://localhost:2492/api/social/getSubscribers",
-            id
+            numericId
         );
-        const response: subscriberType = data.subscribers;
+        const response = data.subscribers;
         if (!response) {
             return;
         }
         setSubscribers(response);
-    };
+    }, [numericId]);
 
-    const subscriptions = async () => {
-        const response = await getSubscriptions(id);
+    const subscriptions = useCallback(async () => {
+        if (!numericId) return;
+        const response = await getSocialStats(
+            `http://localhost:2492/api/social/getSubscriptions`,
+            numericId
+        );
         const data = response.subscriptions;
         if (!data) {
             return;
         }
         setSubsription(data);
-    };
+    }, [numericId]);
 
     useEffect(() => {
-        if (id) fetchUser();
-        fetchPhotos();
-        fetchSubscribers();
-        subscriptions();
-    }, [id]);
-
-    useEffect(() => {
-        for (let i = 0; i < Subscribers.length; i++) {
-            if (Subscribers[i].subscriber_id === State.userId) {
-                setFollow(true);
-            }
+        if (numericId) {
+            fetchUser();
+            fetchPhotos();
+            fetchSubscribers();
+            subscriptions();
         }
-    }, [Subscribers]);
+    }, [numericId, fetchUser, fetchPhotos, fetchSubscribers, subscriptions]);
+
+    useEffect(() => {
+        setFollow(
+            Subscribers.some(
+                (subscriber) => subscriber.subscriber_id === State.userId
+            )
+        );
+    }, [Subscribers, State.userId]);
 
     if (loading) return <div>Загрузка...</div>;
 
     if (!user) return <div>Пользователь не найден</div>;
+
     return (
         <main className="ProfilePage__container">
             <div className="ProfilePage">
@@ -168,7 +175,6 @@ export const OtherProfilePage = () => {
                     <div className="ProfilePage__username">
                         <h2>{user.username || "User"}</h2>
                     </div>
-                    <div></div>
                     <div className="ProfilePage__statistics PersonalPage_Statistics">
                         <ul className="ProfilePage__statsics-list">
                             <li className="ProfilePage__statistics-item">
@@ -185,8 +191,18 @@ export const OtherProfilePage = () => {
                             </li>
                         </ul>
                     </div>
-                    <div>
-                        <ImagesComponent image={Photos} />
+                    <div className="MainPage__Container__Images">
+                        {Photos.map((image) => (
+                            <div className="MainPage__Images" key={image.id}>
+                                <div className="MainPage__Images_User__Container">
+                                    <div className="MainPage__Images_User"></div>
+                                </div>
+                                <ImagesComponent image={image} />
+                                <p className="MainPage__Images_Description">
+                                    {image.description}
+                                </p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>

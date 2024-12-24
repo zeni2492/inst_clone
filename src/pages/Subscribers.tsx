@@ -1,4 +1,4 @@
-import { getSubscribers } from "../api/api";
+import { getSocialStats } from "../api/api";
 import { UserState } from "../App";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
@@ -12,9 +12,9 @@ export const Subscribers = () => {
         //getting data from redux
         (state: { user: UserState }) => state.user
     );
-
+    // fetching info about your subscribers with function from api/api
     const subscribers = async () => {
-        const response = await getSubscribers(
+        const response = await getSocialStats(
             "http://localhost:2492/api/social/getSubscribers",
             userId
         );
@@ -41,33 +41,37 @@ export const Subscribers = () => {
                 <div className="FindPage__Users">
                     {/* Список пользователей */}
                     {Subscribers.length > 0 ? (
-                        Subscribers.map((user: User) => (
-                            <div
-                                onClick={() => redirect(user.id)}
-                                className="FindPage__User"
-                                key={user.id}
-                            >
-                                <div className="FindPage__image">
-                                    <img
-                                        className="FindPage__avatar"
-                                        src={
-                                            user.photo_url !== null
-                                                ? `http://localhost:2492${user.photo_url}`
-                                                : ""
-                                        }
-                                        alt="User Avatar"
-                                    />
+                        Subscribers.map(
+                            (
+                                user: User //mapping users and displaying them
+                            ) => (
+                                <div
+                                    onClick={() => redirect(user.id)}
+                                    className="FindPage__User"
+                                    key={user.id}
+                                >
+                                    <div className="FindPage__image">
+                                        <img
+                                            className="FindPage__avatar"
+                                            src={
+                                                user.photo_url !== null
+                                                    ? `http://localhost:2492${user.photo_url}`
+                                                    : ""
+                                            }
+                                            alt="User Avatar"
+                                        />
+                                    </div>
+                                    <div className="FindPage__username">
+                                        <h2 className="FindPage__name">
+                                            {user.username}
+                                        </h2>
+                                        <p className="FindPage__email">
+                                            {user.email}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div className="FindPage__username">
-                                    <h2 className="FindPage__name">
-                                        {user.username}
-                                    </h2>
-                                    <p className="FindPage__email">
-                                        {user.email}
-                                    </p>
-                                </div>
-                            </div>
-                        ))
+                            )
+                        )
                     ) : (
                         <p>Пользователи не найдены</p>
                     )}

@@ -78,13 +78,41 @@ class PhotoController {
         }
     }
 
-    async getAll(req, res) {
+    async getSubscribedPhotos(req, res) {
+        const { id } = req.params; // ID текущего пользователя
+
         try {
-            const result = await pool.query("SELECT * FROM photos");
+            const result = await pool.query(
+                `
+                SELECT 
+                    photos.*,
+                    users.id AS user_id, 
+                    users.username, 
+                    users.photo_url AS user_photo
+                FROM 
+                    photos
+                JOIN 
+                    users ON photos.user_id = users.id
+                JOIN 
+                    subscriptions ON subscriptions.subscribed_to_id = users.id
+                WHERE 
+                    subscriptions.subscriber_id = $1
+                ORDER BY 
+                    photos.created_at DESC
+            `,
+                [id]
+            );
+
             res.status(200).json(result.rows);
         } catch (error) {
-            console.error("Ошибка при получении всех фотографий:", error);
-            res.status(500).json({ message: "Ошибка сервера" });
+            console.error(
+                "Ошибка при получении фотографий подписанных пользователей:",
+                error
+            );
+            res.status(500).json({
+                message: "Ошибка сервера",
+                error: error.message,
+            });
         }
     }
 
